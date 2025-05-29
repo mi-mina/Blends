@@ -10,10 +10,11 @@ const pointR = 15;
 const sep = 15;
 const margin = { top: pointSide, right: pointSide, bottom: 0, left: pointSide };
 
-const colorC = "#EAF25CFF";
-const colorD = "#00f5d4";
 const colorA = "#f15bb5";
 const colorB = "#00bbf9";
+const colorC = "#EAF25CFF";
+const colorD = "#424242FF";
+// const colorD = "#00f5d4";
 
 // JavaScript to validate the "Points" input in real-time
 const pointsInput = document.getElementById("linePoints");
@@ -437,6 +438,166 @@ function drawBiaxialBlend(data) {
     });
 }
 
+function drawTriaxialBlend(data) {
+  // Clear previous SVG elements
+  d3.select(`#graph`).selectAll("*").remove();
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Set up SVG /////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+  const container = document.getElementById("graph");
+  const svgWidth = container.clientWidth;
+  const svgHeight = window.innerHeight;
+
+  // Containers ///////////////////////////////////////////////////////////
+  const svg = d3
+    .select(`#graph`)
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .style("user-select", "none");
+
+  const chartContainer = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  // Scale to position points in a triangular grid
+  const xScale = pointSide * 2 + sep;
+  const yScale = pointSide * 2 + sep * 1.5;
+
+  const pointContainer = chartContainer
+    .selectAll(".pointContainer")
+    .data(data)
+    .enter()
+    .append("g")
+    .attr("class", "pointContainer")
+    .attr("transform", d => {
+      const x = d.position[0] * xScale;
+      const y = d.position[1] * yScale;
+      return `translate(${x}, ${y})`;
+    });
+
+  pointContainer
+    .append("rect")
+    .attr("x", -pointSide)
+    .attr("y", -pointSide)
+    .attr("width", pointSide)
+    .attr("height", pointSide)
+    .style("fill", colorA)
+    .style("fill-opacity", d => d.percentageA / 100)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  pointContainer
+    .append("rect")
+    .attr("x", -pointSide)
+    .attr("y", 0)
+    .attr("width", pointSide)
+    .attr("height", pointSide)
+    .style("fill", colorB)
+    .style("fill-opacity", d => d.percentageB / 100)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  pointContainer
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", pointSide)
+    .attr("height", pointSide)
+    .style("fill", colorC)
+    .style("fill-opacity", d => d.percentageC / 100)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  pointContainer
+    .append("circle")
+    .attr("r", pointR)
+    .style("fill", d => {
+      const colors = [colorA, colorB, colorC];
+      const percentages = [d.percentageA, d.percentageB, d.percentageC];
+      return blendColors(colors, percentages);
+    })
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  // Add text labels
+  // point text
+  pointContainer
+    .append("text")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "middle")
+    .text(d => d.point);
+
+  // Draw the triangle for each point
+  // pointContainer
+  //   .append("polygon")
+  //   .attr(
+  //     "points",
+  //     `0,-${pointSide} ${pointSide},${pointSide} -${pointSide},${pointSide}`
+  //   )
+  //   .style("fill", d =>
+  //     blendColors(
+  //       [colorA, colorB, colorC],
+  //       [d.percentageA, d.percentageB, d.percentageC]
+  //     )
+  //   )
+  //   .style("stroke", "black")
+  //   .style("stroke-width", 1);
+
+  // Add text labels for percentages
+  pointContainer
+    .append("text")
+    .attr("x", 0)
+    .attr("y", -pointSide * 1.2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "0.6em")
+    .text(d => `${d.percentageA.toFixed(1)}%`);
+
+  pointContainer
+    .append("text")
+    .attr("x", pointSide * 0.8)
+    .attr("y", pointSide * 0.8)
+    .attr("text-anchor", "start")
+    .style("font-size", "0.6em")
+    .text(d => `${d.percentageB.toFixed(1)}%`);
+
+  pointContainer
+    .append("text")
+    .attr("x", -pointSide * 0.8)
+    .attr("y", pointSide * 0.8)
+    .attr("text-anchor", "end")
+    .style("font-size", "0.6em")
+    .text(d => `${d.percentageC.toFixed(1)}%`);
+
+  // Add text labels for milliliters
+  pointContainer
+    .append("text")
+    .attr("x", 0)
+    .attr("y", -pointSide * 0.5)
+    .attr("text-anchor", "middle")
+    .style("font-size", "0.8em")
+    .text(d => `${d.mlA.toFixed(1)}ml`);
+
+  pointContainer
+    .append("text")
+    .attr("x", pointSide * 0.5)
+    .attr("y", pointSide * 0.5)
+    .attr("text-anchor", "start")
+    .style("font-size", "0.8em")
+    .text(d => `${d.mlB.toFixed(1)}ml`);
+
+  pointContainer
+    .append("text")
+    .attr("x", -pointSide * 0.5)
+    .attr("y", pointSide * 0.5)
+    .attr("text-anchor", "end")
+    .style("font-size", "0.8em")
+    .text(d => `${d.mlC.toFixed(1)}ml`);
+}
+
 function getLinearData(numberPoints, increment, testSize) {
   const data = [];
   d3.range(numberPoints).forEach((d, i, nodes) => {
@@ -466,8 +627,8 @@ function getTriaxialData(triaxialPoints, testSize) {
       // Calculate percentages for each corner of the triangle
       const percentageA =
         ((triaxialPoints - 1 - row) / (triaxialPoints - 1)) * 100;
-      const percentageB = (col / (triaxialPoints - 1)) * 100;
-      const percentageC = 100 - percentageA - percentageB;
+      const percentageC = (col / (triaxialPoints - 1)) * 100;
+      const percentageB = 100 - percentageA - percentageC;
 
       // Calculate ml values based on percentages
       const mlA = (percentageA / 100) * testSize;
