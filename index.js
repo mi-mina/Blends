@@ -29,6 +29,10 @@ pointsInput.addEventListener("input", () => {
   }
 });
 
+// Force "line" blend type to be selected on page load
+document.getElementById("blendType").value = "line";
+document.getElementById("blendType").dispatchEvent(new Event("change"));
+
 document.getElementById("blendType").addEventListener("change", event => {
   const selectedBlendType = event.target.value;
 
@@ -73,13 +77,9 @@ function drawBlend() {
     drawLinearBlend(data);
   } else if (blendType === "triaxial") {
     const data = getTriaxialData(triaxialPoints, testSize);
-    console.log("triaxialPoints", triaxialPoints);
-
-    console.log("data", data);
     drawTriaxialBlend(data);
   } else if (blendType === "biaxial") {
     const data = getBiaxialData(biaxialRows, biaxialColumns, testSize);
-    console.log(data);
     drawBiaxialBlend(data);
   }
 }
@@ -223,7 +223,182 @@ function drawLinearBlend(data) {
     });
 }
 
-function drawTriaxialBlend(data) {}
+function drawTriaxialBlend(data) {
+  // Clear previous SVG elements
+  d3.select(`#graph`).selectAll("*").remove();
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Set up SVG /////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+  const container = document.getElementById("graph");
+  const svgWidth = container.clientWidth;
+  const svgHeight = window.innerHeight;
+
+  // Containers ///////////////////////////////////////////////////////////
+  const svg = d3
+    .select(`#graph`)
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .style("user-select", "none");
+
+  const chartContainer = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  // Scale to position points in a triangular grid
+  const xScale = pointSide * 2 + sep;
+  const yScale = pointSide * 2 + sep;
+  const numberOfRows = data[data.length - 1].position[1] + 1;
+
+  const pointContainer = chartContainer
+    .selectAll(".pointContainer")
+    .data(data)
+    .enter()
+    .append("g")
+    .attr("class", "pointContainer")
+    .attr("transform", d => {
+      const t = ((numberOfRows - d.position[1]) * xScale) / 2;
+      const x = t + d.position[0] * xScale;
+      const y = d.position[1] * yScale;
+      return `translate(${x}, ${y})`;
+    });
+
+  pointContainer
+    .append("rect")
+    .attr("x", -pointSide * 0.5)
+    .attr("y", -pointSide)
+    .attr("width", pointSide)
+    .attr("height", pointSide)
+    .style("fill", colorA)
+    .style("fill-opacity", d => d.percentageA / 100)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  pointContainer
+    .append("rect")
+    .attr("x", -pointSide)
+    .attr("y", 0)
+    .attr("width", pointSide)
+    .attr("height", pointSide)
+    .style("fill", colorB)
+    .style("fill-opacity", d => d.percentageB / 100)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  pointContainer
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", pointSide)
+    .attr("height", pointSide)
+    .style("fill", colorC)
+    .style("fill-opacity", d => d.percentageC / 100)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  pointContainer
+    .append("circle")
+    .attr("r", pointR)
+    .style("fill", d => {
+      const colors = [colorA, colorB, colorC];
+      const percentages = [d.percentageA, d.percentageB, d.percentageC];
+      return blendColors(colors, percentages);
+    })
+    .style("stroke", "black")
+    .style("stroke-width", 1);
+
+  // Add text labels
+  // point text
+  pointContainer
+    .append("text")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "middle")
+    .text(d => d.point);
+
+  // Add text labels for percentages
+  pointContainer
+    .append("text")
+    .attr("x", -pointSide * 0.45)
+    .attr("y", -pointSide * 0.85)
+    .attr("dy", "0.35em")
+    .style("font-size", "0.6em")
+    .text(d => {
+      return d.percentageA === 0
+        ? ""
+        : Number.isInteger(d.percentageA)
+        ? `${d.percentageA.toFixed(0)}%` // No decimals for integers
+        : `${d.percentageA.toFixed(1)}%`; // One decimal
+    });
+
+  pointContainer
+    .append("text")
+    .attr("x", -pointSide * 0.95)
+    .attr("y", pointSide * 0.85)
+    .attr("dy", "0.35em")
+    .style("font-size", "0.6em")
+    .text(d => {
+      return d.percentageB === 0
+        ? ""
+        : Number.isInteger(d.percentageB)
+        ? `${d.percentageB.toFixed(0)}%` // No decimals for integers
+        : `${d.percentageB.toFixed(1)}%`; // One decimal
+    });
+
+  pointContainer
+    .append("text")
+    .attr("x", pointSide * 0.95)
+    .attr("y", pointSide * 0.85)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "end")
+    .style("font-size", "0.6em")
+    .text(d => {
+      return d.percentageC === 0
+        ? ""
+        : Number.isInteger(d.percentageC)
+        ? `${d.percentageC.toFixed(0)}%` // No decimals for integers
+        : `${d.percentageC.toFixed(1)}%`; // One decimal
+    });
+
+  // Add text labels for milliliters
+  pointContainer
+    .append("text")
+    .attr("x", 0)
+    .attr("y", -pointSide * 0.5)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "middle")
+    .style("font-size", "1.2em")
+    .text(d => {
+      if (d.mlA === 0) return "";
+      return Number.isInteger(d.mlA) ? d.mlA.toFixed(0) : d.mlA.toFixed(1);
+    });
+
+  pointContainer
+    .append("text")
+    .attr("x", -pointSide * 0.5)
+    .attr("y", pointSide * 0.5)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "middle")
+    .style("font-size", "1.2em")
+    .text(d => {
+      if (d.mlB === 0) return "";
+      return Number.isInteger(d.mlB) ? d.mlB.toFixed(0) : d.mlB.toFixed(1);
+    });
+
+  pointContainer
+    .append("text")
+    .attr("x", pointSide * 0.5)
+    .attr("y", pointSide * 0.5)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "middle")
+    .style("font-size", "1.2em")
+    .text(d => {
+      if (d.mlC === 0) return "";
+      return Number.isInteger(d.mlC) ? d.mlC.toFixed(0) : d.mlC.toFixed(1);
+    });
+}
 
 function drawBiaxialBlend(data) {
   // Clear previous SVG elements
@@ -330,6 +505,7 @@ function drawBiaxialBlend(data) {
     .attr("text-anchor", "middle")
     .text(d => d.point);
 
+  // Add text labels for percentages
   pointContainer
     .append("text")
     .attr("x", -pointSide * 0.95)
@@ -388,7 +564,7 @@ function drawBiaxialBlend(data) {
         : `${d.percentageD.toFixed(1)}%`; // One decimal
     });
 
-  // ml text
+  // Add text labels for milliliters
   pointContainer
     .append("text")
     .attr("x", -pointSide * 0.5)
@@ -396,7 +572,7 @@ function drawBiaxialBlend(data) {
     .attr("dy", "0.35em")
     .attr("text-anchor", "middle")
     .style("font-size", "1.2em") // Font size for the number
-    .html(d => {
+    .text(d => {
       if (d.mlA === 0) return "";
       return Number.isInteger(d.mlA) ? d.mlA.toFixed(0) : d.mlA.toFixed(1);
     });
@@ -408,7 +584,7 @@ function drawBiaxialBlend(data) {
     .attr("dy", "0.35em")
     .attr("text-anchor", "middle")
     .style("font-size", "1.2em") // Font size for the number
-    .html(d => {
+    .text(d => {
       if (d.mlB === 0) return "";
       return Number.isInteger(d.mlB) ? d.mlB.toFixed(0) : d.mlB.toFixed(1);
     });
@@ -420,7 +596,7 @@ function drawBiaxialBlend(data) {
     .attr("dy", "0.35em")
     .attr("text-anchor", "middle")
     .style("font-size", "1.2em") // Font size for the number
-    .html(d => {
+    .text(d => {
       if (d.mlC === 0) return "";
       return Number.isInteger(d.mlC) ? d.mlC.toFixed(0) : d.mlC.toFixed(1);
     });
@@ -432,170 +608,10 @@ function drawBiaxialBlend(data) {
     .attr("dy", "0.35em")
     .attr("text-anchor", "middle")
     .style("font-size", "1.2em") // Font size for the number
-    .html(d => {
+    .text(d => {
       if (d.mlD === 0) return "";
       return Number.isInteger(d.mlD) ? d.mlD.toFixed(0) : d.mlD.toFixed(1);
     });
-}
-
-function drawTriaxialBlend(data) {
-  // Clear previous SVG elements
-  d3.select(`#graph`).selectAll("*").remove();
-
-  ///////////////////////////////////////////////////////////////////////////
-  // Set up SVG /////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////
-  const container = document.getElementById("graph");
-  const svgWidth = container.clientWidth;
-  const svgHeight = window.innerHeight;
-
-  // Containers ///////////////////////////////////////////////////////////
-  const svg = d3
-    .select(`#graph`)
-    .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight)
-    .style("user-select", "none");
-
-  const chartContainer = svg
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-  // Scale to position points in a triangular grid
-  const xScale = pointSide * 2 + sep;
-  const yScale = pointSide * 2 + sep * 1.5;
-
-  const pointContainer = chartContainer
-    .selectAll(".pointContainer")
-    .data(data)
-    .enter()
-    .append("g")
-    .attr("class", "pointContainer")
-    .attr("transform", d => {
-      const x = d.position[0] * xScale;
-      const y = d.position[1] * yScale;
-      return `translate(${x}, ${y})`;
-    });
-
-  pointContainer
-    .append("rect")
-    .attr("x", -pointSide)
-    .attr("y", -pointSide)
-    .attr("width", pointSide)
-    .attr("height", pointSide)
-    .style("fill", colorA)
-    .style("fill-opacity", d => d.percentageA / 100)
-    .style("stroke", "black")
-    .style("stroke-width", 1);
-
-  pointContainer
-    .append("rect")
-    .attr("x", -pointSide)
-    .attr("y", 0)
-    .attr("width", pointSide)
-    .attr("height", pointSide)
-    .style("fill", colorB)
-    .style("fill-opacity", d => d.percentageB / 100)
-    .style("stroke", "black")
-    .style("stroke-width", 1);
-
-  pointContainer
-    .append("rect")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", pointSide)
-    .attr("height", pointSide)
-    .style("fill", colorC)
-    .style("fill-opacity", d => d.percentageC / 100)
-    .style("stroke", "black")
-    .style("stroke-width", 1);
-
-  pointContainer
-    .append("circle")
-    .attr("r", pointR)
-    .style("fill", d => {
-      const colors = [colorA, colorB, colorC];
-      const percentages = [d.percentageA, d.percentageB, d.percentageC];
-      return blendColors(colors, percentages);
-    })
-    .style("stroke", "black")
-    .style("stroke-width", 1);
-
-  // Add text labels
-  // point text
-  pointContainer
-    .append("text")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("dy", "0.35em")
-    .attr("text-anchor", "middle")
-    .text(d => d.point);
-
-  // Draw the triangle for each point
-  // pointContainer
-  //   .append("polygon")
-  //   .attr(
-  //     "points",
-  //     `0,-${pointSide} ${pointSide},${pointSide} -${pointSide},${pointSide}`
-  //   )
-  //   .style("fill", d =>
-  //     blendColors(
-  //       [colorA, colorB, colorC],
-  //       [d.percentageA, d.percentageB, d.percentageC]
-  //     )
-  //   )
-  //   .style("stroke", "black")
-  //   .style("stroke-width", 1);
-
-  // Add text labels for percentages
-  pointContainer
-    .append("text")
-    .attr("x", 0)
-    .attr("y", -pointSide * 1.2)
-    .attr("text-anchor", "middle")
-    .style("font-size", "0.6em")
-    .text(d => `${d.percentageA.toFixed(1)}%`);
-
-  pointContainer
-    .append("text")
-    .attr("x", pointSide * 0.8)
-    .attr("y", pointSide * 0.8)
-    .attr("text-anchor", "start")
-    .style("font-size", "0.6em")
-    .text(d => `${d.percentageB.toFixed(1)}%`);
-
-  pointContainer
-    .append("text")
-    .attr("x", -pointSide * 0.8)
-    .attr("y", pointSide * 0.8)
-    .attr("text-anchor", "end")
-    .style("font-size", "0.6em")
-    .text(d => `${d.percentageC.toFixed(1)}%`);
-
-  // Add text labels for milliliters
-  pointContainer
-    .append("text")
-    .attr("x", 0)
-    .attr("y", -pointSide * 0.5)
-    .attr("text-anchor", "middle")
-    .style("font-size", "0.8em")
-    .text(d => `${d.mlA.toFixed(1)}ml`);
-
-  pointContainer
-    .append("text")
-    .attr("x", pointSide * 0.5)
-    .attr("y", pointSide * 0.5)
-    .attr("text-anchor", "start")
-    .style("font-size", "0.8em")
-    .text(d => `${d.mlB.toFixed(1)}ml`);
-
-  pointContainer
-    .append("text")
-    .attr("x", -pointSide * 0.5)
-    .attr("y", pointSide * 0.5)
-    .attr("text-anchor", "end")
-    .style("font-size", "0.8em")
-    .text(d => `${d.mlC.toFixed(1)}ml`);
 }
 
 function getLinearData(numberPoints, increment, testSize) {
