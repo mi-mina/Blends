@@ -76,7 +76,9 @@ function drawBlend() {
   const biaxialRows = document.getElementById("biaxialRows").value;
   const biaxialColumns = document.getElementById("biaxialColumns").value;
 
-  const increment = document.getElementById("increments").value;
+  const increment = document.getElementById("increments")
+    ? document.getElementById("increments").value
+    : 0;
 
   if (blendType === "line") {
     const data = getLinearData(linePoints, increment, testSize);
