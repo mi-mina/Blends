@@ -1,8 +1,14 @@
 // TODO
-// download blend as pdf or image
+// Fix:
 // adjust to screen size
+// Hay veces que muestra un decimal aunque sea cero
+
+// Improve:
+// download blend as pdf or image
 // Poner dos pestañas en la parte de la derecha, una para "Blending chart" y otra para "Glaze recipes"
-// Hacer que se oculte la parte de la izquierda?
+// Hacer que se oculte la parte de la izquierda
+// Poder elegir los colores de las esquinas
+// Que actualice el gráfico al cambiar cualquier valor del menu lateral en vez de tener que pulsar el botón "Get values"
 
 // Constants //////////////////////////////////////////////////////////////////
 const pointSide = 54;
@@ -13,8 +19,8 @@ const margin = { top: pointSide, right: pointSide, bottom: 0, left: pointSide };
 const colorA = "#f15bb5";
 const colorB = "#00bbf9";
 const colorC = "#EAF25CFF";
-const colorD = "#424242FF";
-// const colorD = "#00f5d4";
+// const colorD = "#424242FF";
+const colorD = "#00f5d4";
 
 // JavaScript to validate the "Points" input in real-time
 const pointsInput = document.getElementById("linePoints");
