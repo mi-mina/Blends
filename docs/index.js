@@ -1,3 +1,5 @@
+// Published in https://mi-mina.github.io/Blends/
+
 // TODO
 // Fix:
 // adjust to screen size
@@ -34,6 +36,41 @@ pointsInput.addEventListener("input", () => {
     pointsInput.value = ""; // Clear the input if invalid
   }
 });
+
+function showTab(tab) {
+  // Tab buttons
+  document
+    .getElementById("tab-graph")
+    .classList.toggle("border-blue-500", tab === "graph");
+  document
+    .getElementById("tab-graph")
+    .classList.toggle("text-blue-600", tab === "graph");
+  document
+    .getElementById("tab-graph")
+    .classList.toggle("border-transparent", tab !== "graph");
+  document
+    .getElementById("tab-graph")
+    .classList.toggle("text-gray-600", tab !== "graph");
+  document
+    .getElementById("tab-recipes")
+    .classList.toggle("border-blue-500", tab === "recipes");
+  document
+    .getElementById("tab-recipes")
+    .classList.toggle("text-blue-600", tab === "recipes");
+  document
+    .getElementById("tab-recipes")
+    .classList.toggle("border-transparent", tab !== "recipes");
+  document
+    .getElementById("tab-recipes")
+    .classList.toggle("text-gray-600", tab !== "recipes");
+  // Tab contents
+  document
+    .getElementById("tab-content-graph")
+    .classList.toggle("hidden", tab !== "graph");
+  document
+    .getElementById("tab-content-recipes")
+    .classList.toggle("hidden", tab !== "recipes");
+}
 
 // Force "line" blend type to be selected on page load
 document.getElementById("blendType").value = "line";
@@ -101,7 +138,8 @@ function drawLinearBlend(data) {
   ///////////////////////////////////////////////////////////////////////////
   const container = document.getElementById("graph");
   const svgWidth = container.clientWidth;
-  const svgHeight = container.clientHeight;
+  const svgHeight = window.innerHeight;
+  console.log("svgHeight", svgHeight);
 
   // Containers ///////////////////////////////////////////////////////////
   const svg = d3
