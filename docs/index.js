@@ -7,10 +7,8 @@
 
 // Improve:
 // download blend as pdf or image
-// Poner dos pestañas en la parte de la derecha, una para "Blending chart" y otra para "Glaze recipes"
 // Hacer que se oculte la parte de la izquierda
 // Poder elegir los colores de las esquinas
-// Que actualice el gráfico al cambiar cualquier valor del menu lateral en vez de tener que pulsar el botón "Get values"
 
 // Constants //////////////////////////////////////////////////////////////////
 const pointSide = 54;
@@ -24,23 +22,11 @@ const colorC = "#EAF25CFF";
 // const colorD = "#424242FF";
 const colorD = "#00f5d4";
 
-// JavaScript to validate the "Points" input in real-time
-const pointsInput = document.getElementById("linePoints");
-
-pointsInput.addEventListener("input", () => {
-  const numberPoints = pointsInput.value;
-
-  // Check if the value is an integer
-  if (!Number.isInteger(Number(numberPoints)) && numberPoints !== "") {
-    alert("Please enter a valid integer for Points.");
-    pointsInput.value = ""; // Clear the input if invalid
-  }
-});
-
 // Force "line" blend type to be selected on page load
 document.getElementById("blendType").value = "line";
 document.getElementById("blendType").dispatchEvent(new Event("change"));
 
+// Event listeners for blend type and tab changes
 document.getElementById("blendType").addEventListener("change", event => {
   const blendType = event.target.value;
 
@@ -52,7 +38,6 @@ document.getElementById("blendType").addEventListener("change", event => {
 
   drawBlend();
 });
-
 document.getElementById("tab-graph").addEventListener("click", function () {
   showTab("graph");
 });
@@ -60,6 +45,32 @@ document.getElementById("tab-recipes").addEventListener("click", function () {
   showTab("recipes");
 });
 
+// Event listeners for input validation
+document.getElementById("linePoints").addEventListener("input", () => {
+  const numberPoints = pointsInput.value;
+
+  // Check if the value is an integer
+  if (!Number.isInteger(Number(numberPoints)) && numberPoints !== "") {
+    alert("Please enter a valid integer for Points.");
+    pointsInput.value = ""; // Clear the input if invalid
+  }
+});
+
+// Event listener for the "Recalculate" button
+document
+  .getElementById("recalculateButton")
+  .addEventListener("click", drawBlend);
+
+// Initial draw on page load
+drawBlend();
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions to update UI elements ////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Updates the visibility of blend inputs based on the selected blend type.
+ * @param {string} blendType - The selected blend type ("line", "triaxial", or "biaxial").
+ */
 function updateBlendInputs(blendType = "line") {
   const lineInputs = document.getElementById("lineInputs");
   const triaxialInputs = document.getElementById("triaxialInputs");
@@ -81,6 +92,13 @@ function updateBlendInputs(blendType = "line") {
   }
 }
 
+/**
+ * Updates the visibility of recipe cards based on the selected blend type.
+ * @param {string} blendType - The selected blend type ("line", "triaxial", or "biaxial").
+ * @description Shows 2 cards for "line", 3 cards for "triaxial", and 4 cards for "biaxial".
+ * @example
+ * @returns {void}
+ */
 function updateRecipeCards(blendType = "line") {
   const cards = [
     document.getElementById("recipe1"),
@@ -100,6 +118,11 @@ function updateRecipeCards(blendType = "line") {
   });
 }
 
+/**
+ * Shows the selected tab and hides the others.
+ * @param {string} tab - The tab to show ("graph" or "recipes").
+ * @description Updates the tab buttons and contents based on the selected tab.
+ */
 function showTab(tab) {
   // Tab buttons
   document
@@ -140,9 +163,13 @@ function showTab(tab) {
   }
 }
 
-drawBlend();
-document.getElementById("getValuesButton").addEventListener("click", drawBlend);
-
+///////////////////////////////////////////////////////////////////////////////
+// Functions to draw blends ///////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Draws the blend chart based on the selected blend type and input values.
+ * @description This function retrieves input values, generates blend data, and calls the appropriate draw function.
+ */
 function drawBlend() {
   const testSize = document.getElementById("size").value;
   const blendType = document.getElementById("blendType").value;
@@ -168,6 +195,11 @@ function drawBlend() {
   }
 }
 
+/**
+ * Draws a linear blend chart using D3.js.
+ * @param {Array} data - The blend data to visualize.
+ * @description Each object in the data array should contain the point index, percentages for each corner, and milliliters for each corner.
+ */
 function drawLinearBlend(data) {
   // Clear previous SVG elements
   d3.select(`#graph`).selectAll("*").remove();
@@ -308,6 +340,11 @@ function drawLinearBlend(data) {
     });
 }
 
+/**
+ * Draws a triaxial blend chart using D3.js.
+ * @param {Array} data - The triaxial blend data to visualize.
+ * @description Each object in the data array should contain the point index, position in the triangle, percentages for each corner, and milliliters for each corner.
+ */
 function drawTriaxialBlend(data) {
   // Clear previous SVG elements
   d3.select(`#graph`).selectAll("*").remove();
@@ -485,6 +522,11 @@ function drawTriaxialBlend(data) {
     });
 }
 
+/**
+ * Draws a biaxial blend chart using D3.js.
+ * @param {Array} data - The biaxial blend data to visualize.
+ * @description Each object in the data array should contain the position, point index, percentages for each corner, and milliliters for each corner.
+ */
 function drawBiaxialBlend(data) {
   // Clear previous SVG elements
   d3.select(`#graph`).selectAll("*").remove();
@@ -699,6 +741,17 @@ function drawBiaxialBlend(data) {
     });
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Functions to generate blend data ///////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Generates linear blend data based on the number of points, increment, and test size.
+ * @param {number} numberPoints - The number of points in the blend.
+ * @param {number} increment - The increment value for percentage calculation.
+ * @param {number} testSize - The total test size in milliliters.
+ * @returns {Array} An array of objects representing the blend data.
+ * @description Each object contains the point index, percentages for each corner, and milliliters for each corner.
+ */
 function getLinearData(numberPoints, increment, testSize) {
   const data = [];
   d3.range(numberPoints).forEach((d, i, nodes) => {
@@ -714,6 +767,13 @@ function getLinearData(numberPoints, increment, testSize) {
   return data;
 }
 
+/**
+ * Generates triaxial blend data based on the number of points and test size.
+ * @param {number} triaxialPoints - The number of points in the triaxial blend.
+ * @param {number} testSize - The total test size in milliliters.
+ * @returns {Array} An array of objects representing the triaxial blend data.
+ * @description Each object contains the point index, position in the triangle, percentages for each corner, and milliliters for each corner.
+ */
 function getTriaxialData(triaxialPoints, testSize) {
   const data = [];
   let pointIndex = 1;
@@ -753,6 +813,14 @@ function getTriaxialData(triaxialPoints, testSize) {
   return data;
 }
 
+/**
+ * Generates biaxial blend data based on the number of rows, columns, and test size.
+ * @param {number} biaxialRows - The number of rows in the biaxial blend.
+ * @param {number} biaxialColumns - The number of columns in the biaxial blend.
+ * @param {number} testSize - The total test size in milliliters.
+ * @returns {Array} An array of objects representing the biaxial blend data.
+ * @description Each object contains the position, point index, percentages for each corner, and milliliters for each corner.
+ */
 function getBiaxialData(biaxialRows, biaxialColumns, testSize) {
   const data = [];
   d3.range(biaxialRows).forEach((d, i, rows) => {
@@ -792,7 +860,16 @@ function getBiaxialData(biaxialRows, biaxialColumns, testSize) {
   return data;
 }
 
-// Helper function to blend colors based on percentages
+///////////////////////////////////////////////////////////////////////////////
+// Helper Functions ///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Blends multiple colors based on their percentages.
+ * @param {Array} colors - An array of hex color strings to blend.
+ * @param {Array} percentages - An array of percentages corresponding to each color.
+ * @returns {string} The blended color as a hex string.
+ */
 function blendColors(colors, percentages) {
   const blendedColor = colors.reduce(
     (acc, color, index) => {
