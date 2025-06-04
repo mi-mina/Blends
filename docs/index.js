@@ -37,6 +37,69 @@ pointsInput.addEventListener("input", () => {
   }
 });
 
+// Force "line" blend type to be selected on page load
+document.getElementById("blendType").value = "line";
+document.getElementById("blendType").dispatchEvent(new Event("change"));
+
+document.getElementById("blendType").addEventListener("change", event => {
+  const blendType = event.target.value;
+
+  // Update blend inputs visibility
+  updateBlendInputs(blendType);
+
+  // Update recipe cards visibility
+  updateRecipeCards(blendType);
+
+  drawBlend();
+});
+
+document.getElementById("tab-graph").addEventListener("click", function () {
+  showTab("graph");
+});
+document.getElementById("tab-recipes").addEventListener("click", function () {
+  showTab("recipes");
+});
+
+function updateBlendInputs(blendType = "line") {
+  const lineInputs = document.getElementById("lineInputs");
+  const triaxialInputs = document.getElementById("triaxialInputs");
+  const biaxialInputs = document.getElementById("biaxialInputs");
+
+  // Show/hide inputs based on the selected blend type
+  if (blendType === "line") {
+    lineInputs.classList.remove("hidden");
+    triaxialInputs.classList.add("hidden");
+    biaxialInputs.classList.add("hidden");
+  } else if (blendType === "triaxial") {
+    lineInputs.classList.add("hidden");
+    triaxialInputs.classList.remove("hidden");
+    biaxialInputs.classList.add("hidden");
+  } else if (blendType === "biaxial") {
+    lineInputs.classList.add("hidden");
+    triaxialInputs.classList.add("hidden");
+    biaxialInputs.classList.remove("hidden");
+  }
+}
+
+function updateRecipeCards(blendType = "line") {
+  const cards = [
+    document.getElementById("recipe1"),
+    document.getElementById("recipe2"),
+    document.getElementById("recipe3"),
+    document.getElementById("recipe4"),
+  ];
+  let showCount = 2;
+  if (blendType === "triaxial") showCount = 3;
+  if (blendType === "biaxial") showCount = 4;
+  cards.forEach((card, idx) => {
+    if (idx < showCount) {
+      card.classList.remove("hidden");
+    } else {
+      card.classList.add("hidden");
+    }
+  });
+}
+
 function showTab(tab) {
   // Tab buttons
   document
@@ -70,38 +133,14 @@ function showTab(tab) {
   document
     .getElementById("tab-content-recipes")
     .classList.toggle("hidden", tab !== "recipes");
+
+  if (tab === "graph") {
+    // If the graph tab is selected, redraw the blend
+    drawBlend();
+  }
 }
 
-// Force "line" blend type to be selected on page load
-document.getElementById("blendType").value = "line";
-document.getElementById("blendType").dispatchEvent(new Event("change"));
-
-document.getElementById("blendType").addEventListener("change", event => {
-  const selectedBlendType = event.target.value;
-
-  // Get references to the input containers
-  const lineInputs = document.getElementById("lineInputs");
-  const triaxialInputs = document.getElementById("triaxialInputs");
-  const biaxialInputs = document.getElementById("biaxialInputs");
-
-  // Show/hide inputs based on the selected blend type
-  if (selectedBlendType === "line") {
-    lineInputs.classList.remove("hidden");
-    triaxialInputs.classList.add("hidden");
-    biaxialInputs.classList.add("hidden");
-  } else if (selectedBlendType === "triaxial") {
-    lineInputs.classList.add("hidden");
-    triaxialInputs.classList.remove("hidden");
-    biaxialInputs.classList.add("hidden");
-  } else if (selectedBlendType === "biaxial") {
-    lineInputs.classList.add("hidden");
-    triaxialInputs.classList.add("hidden");
-    biaxialInputs.classList.remove("hidden");
-  }
-});
-
 drawBlend();
-
 document.getElementById("getValuesButton").addEventListener("click", drawBlend);
 
 function drawBlend() {
