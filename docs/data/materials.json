@@ -1,0 +1,801 @@
+[
+   {
+      "materialId":1,
+      "materialName_es":"Alúmina",
+      "searchName_es":"Alúmina",
+      "materialName":"Alumina",
+      "searchName":"Alumina",
+      "materialAnalysis":"Al2O3: 100",
+      "materialOxides":[
+         "Al2O3"
+      ]
+   },
+   {
+      "materialId":2,
+      "materialName_es":"Alúmina Anhidra",
+      "searchName_es":"Alúmina Anhidra",
+      "materialName":"Alumina Hydrate",
+      "searchName":"Alumina Hydrate",
+      "materialAnalysis":"Al2O3: 65",
+      "materialOxides":[
+         "Al2O3"
+      ]
+   },
+   {
+      "materialId":3,
+      "materialName_es":"Arcilla de bola",
+      "searchName_es":"Arcilla de bola",
+      "materialName":"Ball Clay",
+      "searchName":"Ball Clay",
+      "materialAnalysis":"SiO2: 59, Al2O3: 25, Na2O: 0, K2O: 1, MgO: 0, CaO: 0, TiO2: 1, Fe2O3: 1",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "TiO2",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":4,
+      "materialName_es":"Carbonato de Bario",
+      "searchName_es":"Carbonato de Bario",
+      "materialName":"Barium Carbonate",
+      "searchName":"Barium Carbonate",
+      "materialAnalysis":"BaO: 78",
+      "materialOxides":[
+         "BaO"
+      ]
+   },
+   {
+      "materialId":5,
+      "materialName_es":"Bentonita",
+      "searchName_es":"Bentonita",
+      "materialName":"Bentonite",
+      "searchName":"Bentonite",
+      "materialAnalysis":"SiO2: 59, Al2O3: 20, Na2O: 3, K2O: 1, MgO: 2, CaO: 1, Fe2O3: 4",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":6,
+      "materialName_es":"Óxido de Cobre",
+      "searchName_es":"Óxido de Cobre",
+      "materialName":"Black Copper Oxide",
+      "searchName":"Black Copper Oxide",
+      "materialAnalysis":"CuO: 100",
+      "materialOxides":[
+         "CuO"
+      ]
+   },
+   {
+      "materialId":7,
+      "materialName_es":"Óxido de hierro negro",
+      "searchName_es":"Óxido de hierro negro",
+      "materialName":"Black Iron Oxide",
+      "searchName":"Black Iron Oxide, BIO",
+      "materialAnalysis":"FeO: 26, Fe2O3: 66",
+      "materialOxides":[
+         "FeO",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":8,
+      "materialName_es":"Óxido de Níquel",
+      "searchName_es":"Óxido de Níquel",
+      "materialName":"Nickel Oxide",
+      "searchName":"Nickel Oxide",
+      "materialAnalysis":"NiO: 100",
+      "materialOxides":[
+         "NiO"
+      ]
+   },
+   {
+      "materialId":9,
+      "materialName_es":"Ceniza de hueso",
+      "searchName_es":"Ceniza de hueso, Fosfato de Calcio",
+      "materialName":"Bone Ash",
+      "searchName":"Bone Ash, Calcium Phosphate",
+      "materialAnalysis":"CaO: 56, P2O5: 42",
+      "materialOxides":[
+         "CaO",
+         "P2O5"
+      ]
+   },
+   {
+      "materialId":10,
+      "materialName_es":"Borax",
+      "searchName_es":"Borax",
+      "materialName":"Borax",
+      "searchName":"Borax",
+      "materialAnalysis":"B2O3: 37, Na2O: 16",
+      "materialOxides":[
+         "B2O3",
+         "Na2O"
+      ]
+   },
+   {
+      "materialId":11,
+      "materialName_es":"Caolín calcinado",
+      "searchName_es":"Caolín calcinado",
+      "materialName":"Calcined Kaolin",
+      "searchName":"Calcined Kaolin",
+      "materialAnalysis":"SiO2: 54, Al2O3: 46",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3"
+      ]
+   },
+   {
+      "materialId":12,
+      "materialName_es":"Talco calcinado, Silicato de Magnesio",
+      "searchName_es":"Talco calcinado, Silicato de Magnesio",
+      "materialName":"Calcined Talc, Magnesium Silicate",
+      "searchName":"Calcined Talc, Magnesium Silicate",
+      "materialAnalysis":"SiO2: 63, MgO: 32",
+      "materialOxides":[
+         "SiO2",
+         "MgO"
+      ]
+   },
+   {
+      "materialId":13,
+      "materialName_es":"Óxido de cromo",
+      "searchName_es":"Óxido de cromo",
+      "materialName":"Chrome Oxide",
+      "searchName":"Chrome Oxide, Chromium Oxide",
+      "materialAnalysis":"Cr2O3: 100",
+      "materialOxides":[
+         "Cr2O3"
+      ]
+   },
+   {
+      "materialId":14,
+      "materialName_es":"Carbonato de cobalto",
+      "searchName_es":"Carbonato de cobalto",
+      "materialName":"Cobalt Carbonate",
+      "searchName":"Cobalt Carbonate",
+      "materialAnalysis":"CoO: 63",
+      "materialOxides":[
+         "CoO"
+      ]
+   },
+   {
+      "materialId":15,
+      "materialName_es":"Óxido de cobalto",
+      "searchName_es":"Óxido de cobalto",
+      "materialName":"Cobalt Oxide",
+      "searchName":"Cobalt Oxide, Black Cobalt Oxide",
+      "materialAnalysis":"CoO: 93",
+      "materialOxides":[
+         "CoO"
+      ]
+   },
+   {
+      "materialId":16,
+      "materialName_es":"Colemanita",
+      "searchName_es":"Colemanita",
+      "materialName":"Colemanite",
+      "searchName":"Colemanite",
+      "materialAnalysis":"B2O3: 51, CaO: 27",
+      "materialOxides":[
+         "B2O3",
+         "CaO"
+      ]
+   },
+   {
+      "materialId":17,
+      "materialName_es":"Carbonato de Cobre",
+      "searchName_es":"Carbonato de Cobre",
+      "materialName":"Copper Carbonate",
+      "searchName":"Copper Carbonate",
+      "materialAnalysis":"CuO: 64",
+      "materialOxides":[
+         "CuO"
+      ]
+   },
+   {
+      "materialId":18,
+      "materialName_es":"Piedra de Cornwall",
+      "searchName_es":"Piedra de Cornwall",
+      "materialName":"Cornwall Stone",
+      "searchName":"Cornwall Stone",
+      "materialAnalysis":"SiO2: 74, Al2O3: 16, Na2O: 3, K2O: 4, MgO: 0, CaO: 2, TiO2: 0, Fe2O3: 0",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "TiO2",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":19,
+      "materialName_es":"Criolita",
+      "searchName_es":"Criolita",
+      "materialName":"Cryolite",
+      "searchName":"Cryolite",
+      "materialAnalysis":"Al2O3: 24, Na2O: 44, F: 54",
+      "materialOxides":[
+         "Al2O3",
+         "Na2O",
+         "F"
+      ]
+   },
+   {
+      "materialId":20,
+      "materialName_es":"Dolomita",
+      "searchName_es":"Dolomita",
+      "materialName":"Dolomite",
+      "searchName":"Dolomite",
+      "materialAnalysis":"MgO: 22, CaO: 30",
+      "materialOxides":[
+         "MgO",
+         "CaO"
+      ]
+   },
+   {
+      "materialId":21,
+      "materialName_es":"Feldespato",
+      "searchName_es":"Feldespato",
+      "materialName":"Feldspar",
+      "searchName":"Feldspar",
+      "materialAnalysis":"SiO2: 65, Al2O3: 18, K2O: 17",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "K2O"
+      ]
+   },
+   {
+      "materialId":22,
+      "materialName_es":"Frita 3110",
+      "searchName_es":"Frita 3110",
+      "materialName":"Ferro Frit 3110",
+      "searchName":"Ferro Frit 3110, 3110-2",
+      "materialAnalysis":"SiO2: 70, Al2O3: 4, B2O3: 3, Na2O: 15, K2O: 2, CaO: 6",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "B2O3",
+         "Na2O",
+         "K2O",
+         "CaO"
+      ]
+   },
+   {
+      "materialId":23,
+      "materialName_es":"Arcilla refractaria",
+      "searchName_es":"Arcilla refractaria",
+      "materialName":"Fireclay",
+      "searchName":"Fireclay",
+      "materialAnalysis":"SiO2: 57, Al2O3: 29, Na2O: 0, K2O: 1, MgO: 0, CaO: 0, TiO2: 2, Fe2O3: 1",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "TiO2",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":24,
+      "materialName_es":"Granito",
+      "searchName_es":"Granito",
+      "materialName":"Granite",
+      "searchName":"Granite",
+      "materialAnalysis":"SiO2: 70, Al2O3: 13, Na2O: 3, K2O: 4, CaO: 2, FeO: 2, Fe2O3: 2",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "CaO",
+         "FeO",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":25,
+      "materialName_es":"Ceniza de madera dura",
+      "searchName_es":"Ceniza de madera dura",
+      "materialName":"Hardwood ash",
+      "searchName":"Hardwood ash",
+      "materialAnalysis":"SiO2: 1, Na2O: 2, K2O: 33, MgO: 16, CaO: 22, P2O5: 16, MnO: 3, Fe2O3: 1",
+      "materialOxides":[
+         "SiO2",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "P2O5",
+         "MnO",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":26,
+      "materialName_es":"Ilmenita",
+      "searchName_es":"Ilmenita",
+      "materialName":"Ilmenite",
+      "searchName":"Ilmenite",
+      "materialAnalysis":"TiO2: 53, FeO: 47",
+      "materialOxides":[
+         "TiO2",
+         "FeO"
+      ]
+   },
+   {
+      "materialId":27,
+      "materialName_es":"Óxido de hierro",
+      "searchName_es":"Óxido de hierro",
+      "materialName":"Iron oxide",
+      "searchName":"Iron oxide",
+      "materialAnalysis":"Fe2O3: 95",
+      "materialOxides":[
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":28,
+      "materialName_es":"Caolín",
+      "searchName_es":"Caolín",
+      "materialName":"Kaolin",
+      "searchName":"Kaolin, China Clay",
+      "materialAnalysis":"SiO2: 47, Al2O3: 40",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3"
+      ]
+   },
+   {
+      "materialId":29,
+      "materialName_es":"Carbonato de litio",
+      "searchName_es":"Carbonato de litio",
+      "materialName":"Lithium Carbonate",
+      "searchName":"Lithium Carbonate",
+      "materialAnalysis":"Li2O: 41",
+      "materialOxides":[
+         "Li2O"
+      ]
+   },
+   {
+      "materialId":30,
+      "materialName_es":"Carbonato de magnesio",
+      "searchName_es":"Carbonato de magnesio, Magnesita",
+      "materialName":"Magnesium carbonate",
+      "searchName":"Magnesium carbonate, Magnesite",
+      "materialAnalysis":"MgO: 48",
+      "materialOxides":[
+         "MgO"
+      ]
+   },
+   {
+      "materialId":31,
+      "materialName_es":"Carbonato de manganeso",
+      "searchName_es":"Carbonato de manganeso",
+      "materialName":"Manganese Carbonate",
+      "searchName":"Manganese Carbonate",
+      "materialAnalysis":"MnO: 62",
+      "materialOxides":[
+         "MnO"
+      ]
+   },
+   {
+      "materialId":32,
+      "materialName_es":"Dióxido de manganeso",
+      "searchName_es":"Dióxido de manganeso",
+      "materialName":"Manganese Dioxide",
+      "searchName":"Manganese Dioxide",
+      "materialAnalysis":"MnO2: 87",
+      "materialOxides":[
+         "MnO2"
+      ]
+   },
+   {
+      "materialId":33,
+      "materialName_es":"Ceniza de madera mezclada",
+      "searchName_es":"Ceniza de madera mezclada",
+      "materialName":"Mixed wood ash",
+      "searchName":"Mixed wood ash",
+      "materialAnalysis":"SiO2: 20, Al2O3: 1, Na2O: 7, K2O: 22, MgO: 7, CaO: 21, P2O5: 14, Fe2O3: 9",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "P2O5",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":34,
+      "materialName_es":"Nephelina Sienita",
+      "searchName_es":"Nephelina Sienita",
+      "materialName":"Nepheline Syenite",
+      "searchName":"Nepheline Syenite, Neph Sye",
+      "materialAnalysis":"SiO2: 61, Al2O3: 23, Na2O: 10, K2O: 5, MgO: 0, CaO: 1, Fe2O3: 0",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":35,
+      "materialName_es":"PR-1000",
+      "searchName_es":"PR-1000",
+      "materialName":"PR-1000",
+      "searchName":"PR-1000",
+      "materialAnalysis":"SiO2: 52, Al2O3: 1, B2O3: 18, Na2O: 6, K2O: 3, CaO: 20",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "B2O3",
+         "Na2O",
+         "K2O",
+         "CaO"
+      ]
+   },
+   {
+      "materialId":36,
+      "materialName_es":"Carbonato de potasio",
+      "searchName_es":"Carbonato de potasio, Potasa",
+      "materialName":"Pearl Ash",
+      "searchName":"Pearl Ash, Potassium Carbonate",
+      "materialAnalysis":"K2O: 68",
+      "materialOxides":[
+         "K2O"
+      ]
+   },
+   {
+      "materialId":37,
+      "materialName_es":"Petalita",
+      "searchName_es":"Petalita",
+      "materialName":"Petalite",
+      "searchName":"Petalite",
+      "materialAnalysis":"SiO2: 78, Al2O3: 17, Li2O: 5",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Li2O"
+      ]
+   },
+   {
+      "materialId":38,
+      "materialName_es":"Feldespato potásico",
+      "searchName_es":"Feldespato potásico",
+      "materialName":"Potash Feldspar",
+      "searchName":"Potash Feldspar",
+      "materialAnalysis":"SiO2: 65, Al2O3: 18, K2O: 17",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "K2O"
+      ]
+   },
+   {
+      "materialId":39,
+      "materialName_es":"Óxido de hierro rojo",
+      "searchName_es":"Óxido de hierro rojo",
+      "materialName":"Red Iron Oxide",
+      "searchName":"Red Iron Oxide, RIO",
+      "materialAnalysis":"Fe2O3: 95",
+      "materialOxides":[
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":40,
+      "materialName_es":"Arcilla roja",
+      "searchName_es":"Arcilla roja",
+      "materialName":"Red clay",
+      "searchName":"Red clay",
+      "materialAnalysis":"SiO2: 65, Al2O3: 16, Na2O: 0, K2O: 4, MgO: 2, CaO: 0, P2O5: 0, TiO2: 1, Fe2O3: 7",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "P2O5",
+         "TiO2",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":41,
+      "materialName_es":"Rutilo",
+      "searchName_es":"Rutile",
+      "materialName":"Rutile",
+      "searchName":"Rutile",
+      "materialAnalysis":"TiO2: 90, Fe2O3: 10",
+      "materialOxides":[
+         "TiO2",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":42,
+      "materialName_es":"Sílice",
+      "searchName_es":"Sílice, Cuarzo",
+      "materialName":"Silica",
+      "searchName":"Silica, Quartz, Flint",
+      "materialAnalysis":"SiO2: 100",
+      "materialOxides":[
+         "SiO2"
+      ]
+   },
+   {
+      "materialId":43,
+      "materialName_es":"Carburo de silicio",
+      "searchName_es":"Carburo de silicio",
+      "materialName":"Silicon carbide",
+      "searchName":"Silicon carbide, SiC",
+      "materialAnalysis":"",
+      "materialOxides":[
+         
+      ]
+   },
+   {
+      "materialId":44,
+      "materialName_es":"Ceniza de soda",
+      "searchName_es":"Ceniza de soda, Carbonato de sodio",
+      "materialName":"Soda Ash",
+      "searchName":"Soda Ash, Sodium Carbonate",
+      "materialAnalysis":"Na2O: 50",
+      "materialOxides":[
+         "Na2O"
+      ]
+   },
+   {
+      "materialId":45,
+      "materialName_es":"Feldespato sódico",
+      "searchName_es":"Feldespato sódico",
+      "materialName":"Soda Feldspar",
+      "searchName":"Soda Feldspar",
+      "materialAnalysis":"SiO2: 69, Al2O3: 19, Na2O: 12",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O"
+      ]
+   },
+   {
+      "materialId":46,
+      "materialName_es":"Espomudeno",
+      "searchName_es":"Espomudeno",
+      "materialName":"Spodumene",
+      "searchName":"Spodumene",
+      "materialAnalysis":"SiO2: 65, Al2O3: 27, Li2O: 8",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Li2O"
+      ]
+   },
+   {
+      "materialId":47,
+      "materialName_es":"Pigmento",
+      "searchName_es":"Pigmento",
+      "materialName":"Stain",
+      "searchName":"Stain, Mason Stain",
+      "materialAnalysis":"",
+      "materialOxides":[
+         
+      ]
+   },
+   {
+      "materialId":48,
+      "materialName_es":"Carbonato de estroncio",
+      "searchName_es":"Carbonato de estroncio",
+      "materialName":"Strontium Carbonate",
+      "searchName":"Strontium Carbonate",
+      "materialAnalysis":"SrO: 70",
+      "materialOxides":[
+         "SrO"
+      ]
+   },
+   {
+      "materialId":49,
+      "materialName_es":"Talco",
+      "searchName_es":"Talco, Silicato de Magnesio",
+      "materialName":"Talc",
+      "searchName":"Talc, Magnesium Silicate",
+      "materialAnalysis":"SiO2: 63, MgO: 32",
+      "materialOxides":[
+         "SiO2",
+         "MgO"
+      ]
+   },
+   {
+      "materialId":50,
+      "materialName_es":"Óxido de estaño",
+      "searchName_es":"Óxido de estaño",
+      "materialName":"Tin Oxide",
+      "searchName":"Tin Oxide, Stannic Oxide",
+      "materialAnalysis":"SnO2: 100",
+      "materialOxides":[
+         "SnO2"
+      ]
+   },
+   {
+      "materialId":51,
+      "materialName_es":"Dióxido de titanio",
+      "searchName_es":"Dióxido de titanio",
+      "materialName":"Titanium Dioxide",
+      "searchName":"Titanium Dioxide",
+      "materialAnalysis":"TiO2: 100",
+      "materialOxides":[
+         "TiO2"
+      ]
+   },
+   {
+      "materialId":52,
+      "materialName_es":"Trifosfato de calcio, Ceniza de hueso sintética",
+      "searchName_es":"Trifosfato de calcio, Ceniza de hueso sintética",
+      "materialName":"Tricalcium Phosphate, Synthetic Bone Ash",
+      "searchName":"Tricalcium Phosphate, Synthetic Bone Ash",
+      "materialAnalysis":"CaO: 54, P2O5: 46",
+      "materialOxides":[
+         "CaO",
+         "P2O5"
+      ]
+   },
+   {
+      "materialId":53,
+      "materialName_es":"Ulexita",
+      "searchName_es":"Ulexita",
+      "materialName":"Ulexita",
+      "searchName":"Ulexita",
+      "materialAnalysis":"B2O3: 43, Na2O: 8, CaO: 14",
+      "materialOxides":[
+         "B2O3",
+         "Na2O",
+         "CaO"
+      ]
+   },
+   {
+      "materialId":54,
+      "materialName_es":"Ceniza de madera lavada",
+      "searchName_es":"Ceniza de madera lavada",
+      "materialName":"Washed Wood ash",
+      "searchName":"Washed Wood ash",
+      "materialAnalysis":"SiO2: 20, Al2O3: 1, Na2O: 7, K2O: 22, MgO: 7, CaO: 21, P2O5: 14, Fe2O3: 9",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "P2O5",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":55,
+      "materialName_es":"Creta",
+      "searchName_es":"Creta, Carbonato de Calcio",
+      "materialName":"Whiting",
+      "searchName":"Whiting, Calcium Carbonate",
+      "materialAnalysis":"CaO: 56",
+      "materialOxides":[
+         "CaO"
+      ]
+   },
+   {
+      "materialId":56,
+      "materialName_es":"Wollastonita",
+      "searchName_es":"Wollastonita",
+      "materialName":"Wollastonite",
+      "searchName":"Wollastonite",
+      "materialAnalysis":"SiO2: 52, CaO: 48",
+      "materialOxides":[
+         "SiO2",
+         "CaO"
+      ]
+   },
+   {
+      "materialId":57,
+      "materialName_es":"Ceniza de madera",
+      "searchName_es":"Ceniza de madera",
+      "materialName":"Wood ash",
+      "searchName":"Wood ash",
+      "materialAnalysis":"SiO2: 20, Al2O3: 1, Na2O: 7, K2O: 22, MgO: 7, CaO: 21, P2O5: 14, Fe2O3: 9",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "Na2O",
+         "K2O",
+         "MgO",
+         "CaO",
+         "P2O5",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":58,
+      "materialName_es":"Óxido de hierro amarillo",
+      "searchName_es":"Óxido de hierro amarillo",
+      "materialName":"Yellow Iron Oxide",
+      "searchName":"Yellow Iron Oxide, YIO",
+      "materialAnalysis":"Fe2O3: 88",
+      "materialOxides":[
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":59,
+      "materialName_es":"Ocre amarillo",
+      "searchName_es":"Ocre amarillo",
+      "materialName":"Yellow Ochre",
+      "searchName":"Yellow Ochre",
+      "materialAnalysis":"SiO2: 58, Al2O3: 20, MgO: 0, CaO: 0, Fe2O3: 22",
+      "materialOxides":[
+         "SiO2",
+         "Al2O3",
+         "MgO",
+         "CaO",
+         "Fe2O3"
+      ]
+   },
+   {
+      "materialId":60,
+      "materialName_es":"Óxido de zinc",
+      "searchName_es":"Óxido de zinc",
+      "materialName":"Zinc Oxide",
+      "searchName":"Zinc Oxide",
+      "materialAnalysis":"ZnO: 100",
+      "materialOxides":[
+         "ZnO"
+      ]
+   },
+   {
+      "materialId":61,
+      "materialName_es":"Dióxido de circonio",
+      "searchName_es":"Dióxido de circonio",
+      "materialName":"Zirconium dioxide",
+      "searchName":"Zirconium dioxide",
+      "materialAnalysis":"ZrO2: 100",
+      "materialOxides":[
+         "ZrO2"
+      ]
+   },
+   {
+      "materialId":62,
+      "materialName_es":"Silicato de circonio",
+      "searchName_es":"Silicato de circonio",
+      "materialName":"Zircopax",
+      "searchName":"Zircopax, Zirconium silicate",
+      "materialAnalysis":"SiO2: 33, ZrO2: 67",
+      "materialOxides":[
+         "SiO2",
+         "ZrO2"
+      ]
+   }
+]
