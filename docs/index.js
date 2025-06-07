@@ -1,14 +1,20 @@
 // Published in https://mi-mina.github.io/Blends/
 
 // TODO
+
 // Fix:
-// adjust to screen size
-// Hay veces que muestra un decimal aunque sea cero
+// - Adjust to screen size
+// - Hay veces que muestra un decimal aunque sea cero
 
 // Improve:
-// download blend as pdf or image
-// Hacer que se oculte la parte de la izquierda
-// Poder elegir los colores de las esquinas
+// - Download blend as pdf or image
+// - Hacer que se oculte la parte de la izquierda
+// - Poder elegir los colores de las esquinas
+
+// Recipes:
+// - Añadir tabla con el cálculo de las recetas
+// - Añadir automáticamente una fila nueva en las recetas cuando se rellena la última disponible
+// - Añadir columna con checkbox para marcar los ingredientes que son aditivos
 
 // Constants //////////////////////////////////////////////////////////////////
 const pointSide = 54;
@@ -37,6 +43,8 @@ document.getElementById("blendType").addEventListener("change", event => {
   updateRecipeCards(blendType);
 
   drawBlend();
+
+  renderRecipesTable();
 });
 document.getElementById("tab-graph").addEventListener("click", function () {
   showTab("graph");
@@ -193,6 +201,7 @@ function drawBlend() {
     const data = getBiaxialData(biaxialRows, biaxialColumns, testSize);
     drawBiaxialBlend(data);
   }
+  renderRecipesTable();
 }
 
 /**
@@ -858,6 +867,54 @@ function getBiaxialData(biaxialRows, biaxialColumns, testSize) {
     });
   });
   return data;
+}
+
+function renderRecipesTable() {
+  const blendType = document.getElementById("blendType").value;
+  let numRows = 0;
+
+  if (blendType === "line") {
+    numRows = Number(document.getElementById("linePoints").value) || 0;
+  } else if (blendType === "triaxial") {
+    const n = Number(document.getElementById("triaxialPoints").value) || 0;
+    numRows = (n * (n + 1)) / 2; // Triangular number
+  } else if (blendType === "biaxial") {
+    const rows = Number(document.getElementById("biaxialRows").value) || 0;
+    const cols = Number(document.getElementById("biaxialColumns").value) || 0;
+    numRows = rows * cols;
+  }
+
+  const container = document.getElementById("recipes-table-container");
+  if (numRows === 0) {
+    container.innerHTML = "";
+    return;
+  }
+
+  let html = `<table class="min-w-full border border-gray-300 text-sm">
+    <thead>
+      <tr>
+        <th class="border px-2 py-1">#</th>
+        <th class="border px-2 py-1">Material 1</th>
+        <th class="border px-2 py-1">Material 2</th>
+        <th class="border px-2 py-1">Material 3</th>
+        <th class="border px-2 py-1">Material 4</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+  for (let i = 1; i <= numRows; i++) {
+    html += `
+      <tr>
+        <td class="border px-2 py-1 text-center">${i}</td>
+        <td class="border px-2 py-1"></td>
+        <td class="border px-2 py-1"></td>
+        <td class="border px-2 py-1"></td>
+        <td class="border px-2 py-1"></td>
+      </tr>
+    `;
+  }
+  html += `</tbody></table>`;
+  container.innerHTML = html;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
