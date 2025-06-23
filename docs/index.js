@@ -28,49 +28,65 @@ const colorC = "#EAF25CFF";
 // const colorD = "#424242FF";
 const colorD = "#00f5d4";
 
-// Force "line" blend type to be selected on page load
-document.getElementById("blendType").value = "line";
-document.getElementById("blendType").dispatchEvent(new Event("change"));
+const selectedMaterials = new Set();
 
-// Event listeners for blend type and tab changes
-document.getElementById("blendType").addEventListener("change", event => {
-  const blendType = event.target.value;
+d3.json("data/materials.json")
+  .then(materials => {
+    // Use the materials array here
+    console.log("Loaded materials:", materials);
+    init(materials);
+  })
+  .catch(error => {
+    console.error("Error loading materials.json:", error);
+  });
 
-  // Update blend inputs visibility
-  updateBlendInputs(blendType);
+function init(materials) {
+  // Force "line" blend type to be selected on page load
+  document.getElementById("blendType").value = "line";
+  document.getElementById("blendType").dispatchEvent(new Event("change"));
 
-  // Update recipe cards visibility
-  updateRecipeCards(blendType);
+  // Event listeners for blend type and tab changes
+  document.getElementById("blendType").addEventListener("change", event => {
+    const blendType = event.target.value;
 
+    // Update blend inputs visibility
+    updateBlendInputs(blendType);
+
+    // Update recipe cards visibility
+    updateRecipeCards(blendType);
+
+    drawBlend();
+
+    renderRecipesTable();
+  });
+  document.getElementById("tab-graph").addEventListener("click", function () {
+    showTab("graph");
+  });
+  document.getElementById("tab-recipes").addEventListener("click", function () {
+    showTab("recipes");
+  });
+
+  // Event listeners for input validation
+  document.getElementById("linePoints").addEventListener("input", () => {
+    const numberPoints = pointsInput.value;
+
+    // Check if the value is an integer
+    if (!Number.isInteger(Number(numberPoints)) && numberPoints !== "") {
+      alert("Please enter a valid integer for Points.");
+      pointsInput.value = ""; // Clear the input if invalid
+    }
+  });
+
+  // Event listener for the "Recalculate" button
+  document
+    .getElementById("recalculateButton")
+    .addEventListener("click", drawBlend);
+
+  populateRecipeMaterialSelects(materials);
+
+  // Initial draw on page load
   drawBlend();
-
-  renderRecipesTable();
-});
-document.getElementById("tab-graph").addEventListener("click", function () {
-  showTab("graph");
-});
-document.getElementById("tab-recipes").addEventListener("click", function () {
-  showTab("recipes");
-});
-
-// Event listeners for input validation
-document.getElementById("linePoints").addEventListener("input", () => {
-  const numberPoints = pointsInput.value;
-
-  // Check if the value is an integer
-  if (!Number.isInteger(Number(numberPoints)) && numberPoints !== "") {
-    alert("Please enter a valid integer for Points.");
-    pointsInput.value = ""; // Clear the input if invalid
-  }
-});
-
-// Event listener for the "Recalculate" button
-document
-  .getElementById("recalculateButton")
-  .addEventListener("click", drawBlend);
-
-// Initial draw on page load
-drawBlend();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions to update UI elements ////////////////////////////////////////////
@@ -171,9 +187,105 @@ function showTab(tab) {
   }
 }
 
+/**
+ * Populates all recipe material selects with options from materials.json.
+ * @param {Array} materials - The materials array loaded from JSON.
+ */
+// function populateRecipeMaterialSelects(materials) {
+//   // Get all selects for recipe materials
+//   const selects = document.querySelectorAll(".recipe-material-select");
+//   // Build options HTML
+//   let options = '<option value="">Select material</option>';
+//   materials.forEach(mat => {
+//     options += `<option value="${mat.materialId}">${mat.materialName}</option>`;
+//   });
+//   // Set options for each select
+//   selects.forEach(select => {
+//     select.innerHTML = options;
+//     select.addEventListener("change", () => {
+//       // Log the selected value and text
+//       console.log("Selected materialId:", select.value);
+//       console.log("Selected text:", select.options[select.selectedIndex].text);
+
+//       if (select.value) {
+
+//       }
+//       });
+//   });
+// }
+
 ///////////////////////////////////////////////////////////////////////////////
 // Functions to draw blends ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+function populateRecipeMaterialSelects(materials) {
+  // Get all selects for recipe materials
+  const selects = document.querySelectorAll(".recipe-material-select");
+  // Build options HTML
+  let options = '<option value="">Select material</option>';
+  materials.forEach(mat => {
+    options += `<option value="${mat.materialId}">${mat.materialName}</option>`;
+  });
+  // Set options for each select
+  selects.forEach(select => {
+    select.innerHTML = options;
+    // Set initial class based on value
+    if (!select.value) {
+      select.classList.add("text-gray-400");
+    } else {
+      select.classList.remove("text-gray-400");
+    }
+
+    select.addEventListener("change", () => {
+      // Log the selected value and text
+      console.log("Selected materialId:", select.value);
+      console.log("Selected text:", select.options[select.selectedIndex].text);
+
+      if (select.value) {
+        select.classList.remove("text-gray-400");
+      } else {
+        select.classList.add("text-gray-400");
+      }
+    });
+  });
+}
+
+// Add listeners for Recipe A (repeat for other recipes as needed)
+const recipe1 = document.getElementById("recipe1");
+recipe1
+  .querySelectorAll('.recipe-material-select, input[type="text"]')
+  .forEach(el => {
+    el.addEventListener("change", () => {
+      console.log(getRecipeData("recipe1"));
+    });
+  });
+
+/**
+ * Retrieves the recipe data from the specified recipe card.
+ * @param {string} recipeId - The ID of the recipe card to retrieve data from.
+ * @returns {Array} An array of objects containing material IDs, names, and percentages.
+ * @description Each object in the array contains the material ID, name, and percentage from the recipe card.
+ * @example
+ * const recipeData = getRecipeData("recipe1");
+ * console.log(recipeData);
+ * // Output: [{ materialId: "mat1", materialName: "Material 1", percentage: "50" }, ...]
+ */
+
+function getRecipeData(recipeId) {
+  const recipe = document.getElementById(recipeId);
+  const selects = recipe.querySelectorAll(".recipe-material-select");
+  const inputs = recipe.querySelectorAll('input[type="text"]');
+  const data = [];
+
+  for (let i = 0; i < selects.length; i++) {
+    data.push({
+      materialId: selects[i].value,
+      materialName: selects[i].options[selects[i].selectedIndex]?.text || "",
+      percentage: inputs[i]?.value || "",
+    });
+  }
+  return data;
+}
+
 /**
  * Draws the blend chart based on the selected blend type and input values.
  * @description This function retrieves input values, generates blend data, and calls the appropriate draw function.
