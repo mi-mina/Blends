@@ -12,9 +12,11 @@
     <div class="p-4">
       <h1 class="text-3xl font-bold underline">Blends</h1>
 
-      <div class="flex h-full">
+      <div class="flex flex-col md:flex-row h-full">
         <!-- Left Section: Inputs -->
-        <div class="w-1/6 pr-4 border-r border-gray-300">
+        <div
+          class="w-full md:w-1/6 pr-0 md:pr-4 border-b md:border-b-0 md:border-r border-gray-300"
+        >
           <!-- Select field for options -->
           <label for="blendType" class="block text-md font-medium mt-4"
             >Blend Type:</label
@@ -112,7 +114,7 @@
         </div>
 
         <!-- Right Section: Tabs -->
-        <div class="w-5/6 p-2">
+        <div class="w-full md:w-5/6 p-2">
           <!-- Tabs -->
           <div class="border-b border-gray-200 mb-4 flex">
             <button
@@ -138,60 +140,30 @@
               <!-- Card 1 -->
               <div
                 id="recipe1"
-                class="bg-white rounded shadow p-4 flex flex-col w-1/4"
+                class="bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
                 <h3 class="text-lg font-semibold mb-2 text-center">Recipe A</h3>
                 <div class="flex">
                   <div class="flex flex-col flex-1 mr-2">
-                    <!-- First column (wider) -->
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
+                    <select
+                      class="mb-2 border border-gray-300 p-1 w-full h-full text-gray-400 recipe-material-select"
+                    ></select>
                   </div>
                   <div class="flex flex-col w-1/3">
-                    <!-- Second column (narrower) -->
                     <input
                       class="mb-2 border border-gray-300 p-1 w-full"
                       type="text"
                       placeholder="0%"
                     />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="mb-2 border border-gray-300 p-1 w-full h-full text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/3">
                     <input
                       class="mb-2 border border-gray-300 p-1 w-full"
                       type="text"
@@ -200,194 +172,27 @@
                   </div>
                 </div>
               </div>
+
               <!-- Card 2 -->
               <div
                 id="recipe2"
-                class="bg-white rounded shadow p-4 flex flex-col w-1/4"
+                class="bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
                 <h3 class="text-lg font-semibold mb-2 text-center">Recipe B</h3>
-                <div class="flex">
-                  <div class="flex flex-col flex-1 mr-2">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                  </div>
-                  <div class="flex flex-col w-1/3">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                  </div>
-                </div>
               </div>
               <!-- Card 3 -->
               <div
                 id="recipe3"
-                class="hidden bg-white rounded shadow p-4 flex flex-col w-1/4"
+                class="hidden bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
                 <h3 class="text-lg font-semibold mb-2 text-center">Recipe C</h3>
-                <div class="flex">
-                  <div class="flex flex-col flex-1 mr-2">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                  </div>
-                  <div class="flex flex-col w-1/3">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                  </div>
-                </div>
               </div>
               <!-- Card 4 -->
               <div
                 id="recipe4"
-                class="hidden bg-white rounded shadow p-4 flex flex-col w-1/4"
+                class="hidden bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
                 <h3 class="text-lg font-semibold mb-2 text-center">Recipe D</h3>
-                <div class="flex">
-                  <div class="flex flex-col flex-1 mr-2">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="Material"
-                    />
-                  </div>
-                  <div class="flex flex-col w-1/3">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
             <div id="recipes-table-container" class="mt-8 w-full"></div>
