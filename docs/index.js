@@ -20,7 +20,12 @@
 const pointSide = 54;
 const pointR = 15;
 const sep = 15;
-const margin = { top: pointSide, right: pointSide, bottom: 0, left: pointSide };
+const margin = {
+  top: pointSide,
+  right: pointSide,
+  bottom: 0,
+  left: pointSide,
+};
 
 const colorA = "#f15bb5";
 const colorB = "#00bbf9";
@@ -329,9 +334,14 @@ function drawLinearBlend(data) {
   // Set up svg /////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
   const container = document.getElementById("graph");
-  const svgWidth = container.clientWidth;
+  const maxWidth =
+    pointSide * data.length +
+    sep * (data.length - 1) +
+    margin.left +
+    margin.right;
+
+  const svgWidth = Math.max(container.clientWidth, maxWidth);
   const svgHeight = window.innerHeight;
-  console.log("svgHeight", svgHeight);
 
   // Containers ///////////////////////////////////////////////////////////
   const svg = d3
@@ -343,7 +353,10 @@ function drawLinearBlend(data) {
 
   const chartContainer = svg
     .append("g")
-    .attr("transform", d => `translate(${margin.left}, ${svgHeight / 2})`);
+    .attr(
+      "transform",
+      d => `translate(${margin.left + pointSide / 2}, ${svgHeight / 2})`
+    );
 
   const pointContainer = chartContainer
     .selectAll(".pointContainer")
@@ -473,9 +486,17 @@ function drawTriaxialBlend(data) {
   ///////////////////////////////////////////////////////////////////////////
   // Set up SVG /////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
+  const numberOfRows = data[data.length - 1].position[1] + 1;
+
   const container = document.getElementById("graph");
-  const svgWidth = container.clientWidth;
-  const svgHeight = window.innerHeight;
+  const maxWidth =
+    pointSide * 2 * numberOfRows +
+    sep * (numberOfRows - 1) +
+    margin.left +
+    margin.right;
+
+  const svgWidth = Math.max(container.clientWidth, maxWidth);
+  const svgHeight = Math.max(window.innerHeight, maxWidth);
 
   // Containers ///////////////////////////////////////////////////////////
   const svg = d3
@@ -492,7 +513,6 @@ function drawTriaxialBlend(data) {
   // Scale to position points in a triangular grid
   const xScale = pointSide * 2 + sep;
   const yScale = pointSide * 2 + sep;
-  const numberOfRows = data[data.length - 1].position[1] + 1;
 
   const pointContainer = chartContainer
     .selectAll(".pointContainer")
@@ -649,15 +669,25 @@ function drawTriaxialBlend(data) {
  * @description Each object in the data array should contain the position, point index, percentages for each corner, and milliliters for each corner.
  */
 function drawBiaxialBlend(data) {
+  console.log("Drawing Biaxial Blend with data:", data);
+
   // Clear previous SVG elements
   d3.select(`#graph`).selectAll("*").remove();
 
   ///////////////////////////////////////////////////////////////////////////
   // Set up svg /////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
+  const numberOfRows = Math.sqrt(data.length);
+
   const container = document.getElementById("graph");
-  const svgWidth = container.clientWidth;
-  const svgHeight = window.innerHeight;
+  const maxSize =
+    pointSide * 2 * numberOfRows +
+    sep * (numberOfRows - 1) +
+    margin.left +
+    margin.right;
+
+  const svgWidth = Math.max(container.clientWidth, maxSize);
+  const svgHeight = Math.max(window.innerHeight, maxSize);
 
   // Containers ///////////////////////////////////////////////////////////
   const svg = d3
