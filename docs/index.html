@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blends</title>
+    <title>Calculadora de mezclas volumétricas</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
 
   <body>
     <div class="p-4">
-      <h1 class="text-3xl font-bold underline">Blends</h1>
+      <h1 class="text-3xl font-bold underline">Mezclas volumétricas</h1>
 
       <div class="flex flex-col md:flex-row h-full">
         <!-- Left Section: Inputs -->
@@ -19,17 +19,17 @@
         >
           <!-- Select field for options -->
           <label for="blendType" class="block text-md font-medium mt-4"
-            >Blend Type:</label
+            >Tipo de mezcla:</label
           >
           <select id="blendType" class="border border-gray-300 p-1 mt-1 w-full">
-            <option value="line">Line</option>
+            <option value="line">Lineal</option>
             <option value="triaxial">Triaxial</option>
-            <option value="biaxial">Biaxial</option>
+            <option value="biaxial">Tetraxial</option>
           </select>
 
           <!-- Input field for test size -->
           <label for="size" class="block text-md font-medium mt-4"
-            >Test size in ml:</label
+            >Tamaño de la muestra en ml:</label
           >
           <input
             id="size"
@@ -42,7 +42,7 @@
           <div id="lineInputs">
             <!-- Input field for points -->
             <label for="linePoints" class="block text-md font-medium mt-4"
-              >Points:</label
+              >Puntos:</label
             >
             <input
               id="linePoints"
@@ -67,7 +67,7 @@
           <div id="triaxialInputs" class="hidden">
             <!-- Input field for points -->
             <label for="triaxialPoints" class="block text-md font-medium mt-4"
-              >Points:</label
+              >Puntos:</label
             >
             <input
               id="triaxialPoints"
@@ -81,7 +81,7 @@
           <div id="biaxialInputs" class="hidden">
             <!-- Input field for number of rows -->
             <label for="biaxialRows" class="block text-md font-medium mt-4"
-              >Rows:</label
+              >Filas:</label
             >
             <input
               id="biaxialRows"
@@ -93,7 +93,7 @@
 
             <!-- Input field for number of rows -->
             <label for="biaxialColumns" class="block text-md font-medium mt-4"
-              >Columns:</label
+              >Columnas:</label
             >
             <input
               id="biaxialColumns"
@@ -109,7 +109,7 @@
             id="recalculateButton"
             class="bg-blue-500 text-white px-2 py-1 mt-4 w-full"
           >
-            Recalculate
+            Recalcular
           </button>
         </div>
 
@@ -121,13 +121,13 @@
               id="tab-graph"
               class="px-4 py-2 -mb-px border-b-2 border-blue-500 text-blue-600 font-semibold focus:outline-none"
             >
-              Graph
+              Diagrama
             </button>
             <button
               id="tab-recipes"
               class="px-4 py-2 -mb-px border-b-2 border-transparent text-gray-600 hover:text-blue-600 font-semibold focus:outline-none"
             >
-              Recipes
+              Recetas
             </button>
           </div>
           <!-- Tab Contents -->
@@ -142,34 +142,92 @@
                 id="recipe1"
                 class="bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Recipe A</h3>
-                <div class="flex">
-                  <div class="flex flex-col flex-1 mr-2">
-                    <select
-                      class="mb-2 border border-gray-300 p-1 w-full h-full text-gray-400 recipe-material-select"
-                    ></select>
-                  </div>
-                  <div class="flex flex-col w-1/3">
-                    <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
-                      type="text"
-                      placeholder="0%"
-                    />
-                  </div>
+                <h3 class="text-lg font-semibold mb-2 text-center">Receta A</h3>
+
+                <div class="flex items-center gap-x-4 py-2">
+                  <span class="flex-1 text-gray-700 font-semibold"
+                    >Material</span
+                  >
+                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                    >%</span
+                  >
+                  <span class="text-gray-700 font-semibold">Adit.</span>
                 </div>
-                <div class="flex">
+
+                <div class="mb-2 flex items-center">
                   <div class="flex flex-col flex-1 mr-2">
                     <select
-                      class="mb-2 border border-gray-300 p-1 w-full h-full text-gray-400 recipe-material-select"
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
                     ></select>
                   </div>
-                  <div class="flex flex-col w-1/3">
+                  <div class="flex flex-col w-1/6">
                     <input
-                      class="mb-2 border border-gray-300 p-1 w-full"
+                      class="border border-gray-300 p-1 w-full h-10"
                       type="text"
                       placeholder="0%"
                     />
                   </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
                 </div>
               </div>
 
@@ -178,21 +236,279 @@
                 id="recipe2"
                 class="bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Recipe B</h3>
+                <h3 class="text-lg font-semibold mb-2 text-center">Receta B</h3>
+
+                <div class="flex items-center gap-x-4 py-2">
+                  <span class="flex-1 text-gray-700 font-semibold"
+                    >Material</span
+                  >
+                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                    >%</span
+                  >
+                  <span class="text-gray-700 font-semibold">Adit.</span>
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
               </div>
               <!-- Card 3 -->
               <div
                 id="recipe3"
                 class="hidden bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Recipe C</h3>
+                <h3 class="text-lg font-semibold mb-2 text-center">Receta C</h3>
+
+                <div class="flex items-center gap-x-4 py-2">
+                  <span class="flex-1 text-gray-700 font-semibold"
+                    >Material</span
+                  >
+                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                    >%</span
+                  >
+                  <span class="text-gray-700 font-semibold">Adit.</span>
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
               </div>
               <!-- Card 4 -->
               <div
                 id="recipe4"
                 class="hidden bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Recipe D</h3>
+                <h3 class="text-lg font-semibold mb-2 text-center">Receta D</h3>
+
+                <div class="flex items-center gap-x-4 py-2">
+                  <span class="flex-1 text-gray-700 font-semibold"
+                    >Material</span
+                  >
+                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                    >%</span
+                  >
+                  <span class="text-gray-700 font-semibold">Adit.</span>
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
+
+                <div class="mb-2 flex items-center">
+                  <div class="flex flex-col flex-1 mr-2">
+                    <select
+                      class="border border-gray-300 p-1 w-full h-10 text-gray-400 recipe-material-select"
+                    ></select>
+                  </div>
+                  <div class="flex flex-col w-1/6">
+                    <input
+                      class="border border-gray-300 p-1 w-full h-10"
+                      type="text"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="mx-2 w-5 h-5 accent-blue-600 rounded border-gray-300"
+                  />
+                </div>
               </div>
             </div>
             <div id="recipes-table-container" class="mt-8 w-full"></div>

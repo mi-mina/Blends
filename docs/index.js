@@ -3,8 +3,8 @@
 // TODO
 
 // Fix:
-// - Adjust to screen size
-// - Hay veces que muestra un decimal aunque sea cero
+// - El diagrama de línea ajustarlo para que no quede como flotando
+// - Hay veces que muestra un decimal aunque sea cero.
 
 // Improve:
 // - Download blend as pdf or image
@@ -15,6 +15,11 @@
 // - Añadir tabla con el cálculo de las recetas
 // - Añadir automáticamente una fila nueva en las recetas cuando se rellena la última disponible
 // - Añadir columna con checkbox para marcar los ingredientes que son aditivos
+// - Complementar el listado de materiales con https://ceramica.name/calculos/aformula
+
+// General:
+// - Ver si se puede añadir google analytics para ver el uso de la web
+// - Cambiar la url para que blends se escriba con minúscula
 
 // Constants //////////////////////////////////////////////////////////////////
 const pointSide = 54;
@@ -33,19 +38,21 @@ const colorC = "#EAF25CFF";
 // const colorD = "#424242FF";
 const colorD = "#00f5d4";
 
-const selectedMaterials = new Set();
+const recipes = {};
+let loadedMaterials = [];
+let materialsById = {};
 
 d3.json("data/materials.json")
-  .then(materials => {
-    // Use the materials array here
-    console.log("Loaded materials:", materials);
-    init(materials);
+  .then(data => {
+    loadedMaterials = data;
+    materialsById = getMaterialsById(loadedMaterials);
+    init();
   })
   .catch(error => {
     console.error("Error loading materials.json:", error);
   });
 
-function init(materials) {
+function init() {
   // Force "line" blend type to be selected on page load
   document.getElementById("blendType").value = "line";
   document.getElementById("blendType").dispatchEvent(new Event("change"));
@@ -87,7 +94,7 @@ function init(materials) {
     .getElementById("recalculateButton")
     .addEventListener("click", drawBlend);
 
-  populateRecipeMaterialSelects(materials);
+  populateRecipeMaterialSelects();
 
   // Initial draw on page load
   drawBlend();
@@ -192,43 +199,23 @@ function showTab(tab) {
   }
 }
 
-/**
- * Populates all recipe material selects with options from materials.json.
- * @param {Array} materials - The materials array loaded from JSON.
- */
-// function populateRecipeMaterialSelects(materials) {
-//   // Get all selects for recipe materials
-//   const selects = document.querySelectorAll(".recipe-material-select");
-//   // Build options HTML
-//   let options = '<option value="">Select material</option>';
-//   materials.forEach(mat => {
-//     options += `<option value="${mat.materialId}">${mat.materialName}</option>`;
-//   });
-//   // Set options for each select
-//   selects.forEach(select => {
-//     select.innerHTML = options;
-//     select.addEventListener("change", () => {
-//       // Log the selected value and text
-//       console.log("Selected materialId:", select.value);
-//       console.log("Selected text:", select.options[select.selectedIndex].text);
-
-//       if (select.value) {
-
-//       }
-//       });
-//   });
-// }
-
 ///////////////////////////////////////////////////////////////////////////////
 // Functions to draw blends ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-function populateRecipeMaterialSelects(materials) {
+
+/**
+ * Populates the recipe material selects with options from the provided materials array.
+ * @param {Array} materials - An array of material objects, each containing materialId and materialName.
+ * @description This function updates all recipe material selects with the available materials.
+ */
+
+function populateRecipeMaterialSelects() {
   // Get all selects for recipe materials
   const selects = document.querySelectorAll(".recipe-material-select");
   // Build options HTML
-  let options = '<option value="">Select material</option>';
-  materials.forEach(mat => {
-    options += `<option value="${mat.materialId}">${mat.materialName}</option>`;
+  let options = '<option value="">Selecciona un material</option>';
+  loadedMaterials.forEach(mat => {
+    options += `<option value="${mat.materialId}">${mat.materialName_es}</option>`;
   });
   // Set options for each select
   selects.forEach(select => {
@@ -240,11 +227,8 @@ function populateRecipeMaterialSelects(materials) {
       select.classList.remove("text-gray-400");
     }
 
+    // Upadate text color based on selection
     select.addEventListener("change", () => {
-      // Log the selected value and text
-      console.log("Selected materialId:", select.value);
-      console.log("Selected text:", select.options[select.selectedIndex].text);
-
       if (select.value) {
         select.classList.remove("text-gray-400");
       } else {
@@ -254,13 +238,43 @@ function populateRecipeMaterialSelects(materials) {
   });
 }
 
-// Add listeners for Recipe A (repeat for other recipes as needed)
-const recipe1 = document.getElementById("recipe1");
-recipe1
+const recipe1Container = document.getElementById("recipe1");
+recipe1Container
   .querySelectorAll('.recipe-material-select, input[type="text"]')
   .forEach(el => {
     el.addEventListener("change", () => {
-      console.log(getRecipeData("recipe1"));
+      recipes["1"] = getRecipeData("recipe1");
+      renderRecipesTable(recipes);
+    });
+  });
+
+const recipe2Container = document.getElementById("recipe2");
+recipe2Container
+  .querySelectorAll('.recipe-material-select, input[type="text"]')
+  .forEach(el => {
+    el.addEventListener("change", () => {
+      recipes["2"] = getRecipeData("recipe2");
+      renderRecipesTable(recipes);
+    });
+  });
+
+const recipe3Container = document.getElementById("recipe3");
+recipe3Container
+  .querySelectorAll('.recipe-material-select, input[type="text"]')
+  .forEach(el => {
+    el.addEventListener("change", () => {
+      recipes["3"] = getRecipeData("recipe3");
+      renderRecipesTable(recipes);
+    });
+  });
+
+const recipe4Container = document.getElementById("recipe4");
+recipe3Container
+  .querySelectorAll('.recipe-material-select, input[type="text"]')
+  .forEach(el => {
+    el.addEventListener("change", () => {
+      recipes["4"] = getRecipeData("recipe4");
+      renderRecipesTable(recipes);
     });
   });
 
@@ -1011,7 +1025,23 @@ function getBiaxialData(biaxialRows, biaxialColumns, testSize) {
   return data;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Recipes Table  functions ///////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Renders the recipes table based on the selected materials and blend type.
+ * @description This function generates a table with the selected materials as columns and the number of rows based on the blend type.
+ */
 function renderRecipesTable() {
+  // Clear previous table
+  document.getElementById("recipes-table-container").innerHTML = "";
+
+  console.log("loadedMaterials", loadedMaterials);
+
+  const selectedMaterials = getSelectedMaterials();
+  console.log("selectedMaterials", selectedMaterials);
+  console.log("materialsById", materialsById);
+
   const blendType = document.getElementById("blendType").value;
   let numRows = 0;
 
@@ -1032,31 +1062,55 @@ function renderRecipesTable() {
     return;
   }
 
+  if (selectedMaterials.length === 0) return;
+
   let html = `<table class="min-w-full border border-gray-300 text-sm">
     <thead>
       <tr>
         <th class="border px-2 py-1">#</th>
-        <th class="border px-2 py-1">Material 1</th>
-        <th class="border px-2 py-1">Material 2</th>
-        <th class="border px-2 py-1">Material 3</th>
-        <th class="border px-2 py-1">Material 4</th>
+        ${selectedMaterials
+          .map(
+            mat =>
+              `<th class="border px-2 py-1">${materialsById[mat].materialName_es}</th>`
+          )
+          .join("")}
       </tr>
     </thead>
     <tbody>
   `;
+
   for (let i = 1; i <= numRows; i++) {
     html += `
       <tr>
         <td class="border px-2 py-1 text-center">${i}</td>
-        <td class="border px-2 py-1"></td>
-        <td class="border px-2 py-1"></td>
-        <td class="border px-2 py-1"></td>
-        <td class="border px-2 py-1"></td>
+        ${selectedMaterials
+          .map(() => `<td class="border px-2 py-1"></td>`)
+          .join("")}
       </tr>
     `;
   }
   html += `</tbody></table>`;
+
   container.innerHTML = html;
+}
+
+function getSelectedMaterials() {
+  const selects = document.querySelectorAll(".recipe-material-select");
+  const materials = Array.from(selects)
+    .map(select => select.value)
+    .filter(value => value && value !== "");
+  // Return unique materials
+  return [...new Set(materials)];
+}
+
+function getMaterialsById(loadedMaterials) {
+  const materialsById = {};
+  loadedMaterials.forEach(material => {
+    !materialsById[material.materialId]
+      ? (materialsById[material.materialId] = material)
+      : console.warn(`Duplicate material ID found: ${material.materialId}`);
+  });
+  return materialsById;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
