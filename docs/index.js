@@ -2,11 +2,16 @@
 
 // TODO
 
+// *** Meter los ml también en un objeto igual que los porcentajes
+
 // Fix:
 // - El diagrama de línea ajustarlo para que no quede como flotando
 // - Hay veces que muestra un decimal aunque sea cero.
 
 // Improve:
+// - Calcular cuántos ml hacen falta de cada esmalte de los extremos
+// - Calcular el número total de puntos
+// - Nombrar con letras los esmaltes de las esquinas, por ejemplo A, B, C, D
 // - Download blend as pdf or image
 // - Hacer que se oculte la parte de la izquierda
 // - Poder elegir los colores de las esquinas
@@ -39,6 +44,7 @@ const colorC = "#EAF25CFF";
 const colorD = "#00f5d4";
 
 const recipes = {};
+let blendData;
 let loadedMaterials = [];
 let materialsById = {};
 
@@ -244,7 +250,7 @@ recipe1Container
   .forEach(el => {
     el.addEventListener("change", () => {
       recipes["1"] = getRecipeData("recipe1");
-      renderRecipesTable(recipes);
+      renderRecipesTable();
     });
   });
 
@@ -254,7 +260,7 @@ recipe2Container
   .forEach(el => {
     el.addEventListener("change", () => {
       recipes["2"] = getRecipeData("recipe2");
-      renderRecipesTable(recipes);
+      renderRecipesTable();
     });
   });
 
@@ -264,7 +270,7 @@ recipe3Container
   .forEach(el => {
     el.addEventListener("change", () => {
       recipes["3"] = getRecipeData("recipe3");
-      renderRecipesTable(recipes);
+      renderRecipesTable();
     });
   });
 
@@ -274,7 +280,7 @@ recipe3Container
   .forEach(el => {
     el.addEventListener("change", () => {
       recipes["4"] = getRecipeData("recipe4");
-      renderRecipesTable(recipes);
+      renderRecipesTable();
     });
   });
 
@@ -323,15 +329,17 @@ function drawBlend() {
     : 0;
 
   if (blendType === "line") {
-    const data = getLinearData(linePoints, increment, testSize);
-    drawLinearBlend(data);
+    blendData = getLinearData(linePoints, increment, testSize);
+    console.log("Linear Blend Data:", blendData);
+    drawLinearBlend(blendData);
   } else if (blendType === "triaxial") {
-    const data = getTriaxialData(triaxialPoints, testSize);
-    drawTriaxialBlend(data);
+    blendData = getTriaxialData(triaxialPoints, testSize);
+    drawTriaxialBlend(blendData);
   } else if (blendType === "biaxial") {
-    const data = getBiaxialData(biaxialRows, biaxialColumns, testSize);
-    drawBiaxialBlend(data);
+    blendData = getBiaxialData(biaxialRows, biaxialColumns, testSize);
+    drawBiaxialBlend(blendData);
   }
+
   renderRecipesTable();
 }
 
@@ -418,8 +426,7 @@ function drawLinearBlend(data) {
     .attr("r", pointR)
     .style("fill", d => {
       const colors = [colorA, colorB];
-      const percentages = [d.percentageA, d.percentageB];
-      return blendColors(colors, percentages);
+      return blendColors(colors, Object.values(d.percentages));
     })
     .style("stroke", "black")
     .style("stroke-width", 1);
@@ -442,10 +449,10 @@ function drawLinearBlend(data) {
     .attr("dy", "0.35em")
     .style("font-size", "0.6em")
     .text(d => {
-      if (d.percentageA === 0) return "";
-      return Number.isInteger(d.percentageA)
-        ? `${d.percentageA.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageA.toFixed(1)}%`; // One decimal
+      if (d.percentages["1"] === 0) return "";
+      return Number.isInteger(d.percentages["1"])
+        ? `${d.percentages["1"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["1"].toFixed(1)}%`; // One decimal
     });
 
   pointContainer
@@ -456,10 +463,10 @@ function drawLinearBlend(data) {
     .attr("text-anchor", "end")
     .style("font-size", "0.6em")
     .text(d => {
-      if (d.percentageB === 0) return "";
-      return Number.isInteger(d.percentageB)
-        ? `${d.percentageB.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageB.toFixed(1)}%`; // One decimal
+      if (d.percentages["2"] === 0) return "";
+      return Number.isInteger(d.percentages["2"])
+        ? `${d.percentages["2"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["2"].toFixed(1)}%`; // One decimal
     });
 
   // ml text
@@ -548,7 +555,7 @@ function drawTriaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorA)
-    .style("fill-opacity", d => d.percentageA / 100)
+    .style("fill-opacity", d => d.percentages["1"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -559,7 +566,7 @@ function drawTriaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorB)
-    .style("fill-opacity", d => d.percentageB / 100)
+    .style("fill-opacity", d => d.percentages["2"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -570,7 +577,7 @@ function drawTriaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorC)
-    .style("fill-opacity", d => d.percentageC / 100)
+    .style("fill-opacity", d => d.percentages["3"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -579,8 +586,7 @@ function drawTriaxialBlend(data) {
     .attr("r", pointR)
     .style("fill", d => {
       const colors = [colorA, colorB, colorC];
-      const percentages = [d.percentageA, d.percentageB, d.percentageC];
-      return blendColors(colors, percentages);
+      return blendColors(colors, Object.values(d.percentages));
     })
     .style("stroke", "black")
     .style("stroke-width", 1);
@@ -605,9 +611,9 @@ function drawTriaxialBlend(data) {
     .text(d => {
       return d.percentageA === 0
         ? ""
-        : Number.isInteger(d.percentageA)
-        ? `${d.percentageA.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageA.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["1"])
+        ? `${d.percentages["1"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["1"].toFixed(1)}%`; // One decimal
     });
 
   pointContainer
@@ -617,11 +623,11 @@ function drawTriaxialBlend(data) {
     .attr("dy", "0.35em")
     .style("font-size", "0.6em")
     .text(d => {
-      return d.percentageB === 0
+      return d.percentages["2"] === 0
         ? ""
-        : Number.isInteger(d.percentageB)
-        ? `${d.percentageB.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageB.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["2"])
+        ? `${d.percentages["2"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["2"].toFixed(1)}%`; // One decimal
     });
 
   pointContainer
@@ -632,11 +638,11 @@ function drawTriaxialBlend(data) {
     .attr("text-anchor", "end")
     .style("font-size", "0.6em")
     .text(d => {
-      return d.percentageC === 0
+      return d.percentages["3"] === 0
         ? ""
-        : Number.isInteger(d.percentageC)
-        ? `${d.percentageC.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageC.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["3"])
+        ? `${d.percentages["3"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["3"].toFixed(1)}%`; // One decimal
     });
 
   // Add text labels for milliliters
@@ -734,7 +740,7 @@ function drawBiaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorA)
-    .style("fill-opacity", d => d.percentageA / 100)
+    .style("fill-opacity", d => d.percentages["1"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -745,7 +751,7 @@ function drawBiaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorB)
-    .style("fill-opacity", d => d.percentageB / 100)
+    .style("fill-opacity", d => d.percentages["2"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -756,7 +762,7 @@ function drawBiaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorC)
-    .style("fill-opacity", d => d.percentageC / 100)
+    .style("fill-opacity", d => d.percentages["3"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -767,7 +773,7 @@ function drawBiaxialBlend(data) {
     .attr("width", pointSide)
     .attr("height", pointSide)
     .style("fill", colorD)
-    .style("fill-opacity", d => d.percentageD / 100)
+    .style("fill-opacity", d => d.percentages["4"] / 100)
     .style("stroke", "black")
     .style("stroke-width", 1);
 
@@ -776,13 +782,7 @@ function drawBiaxialBlend(data) {
     .attr("r", pointR)
     .style("fill", d => {
       const colors = [colorA, colorB, colorC, colorD];
-      const percentages = [
-        d.percentageA,
-        d.percentageB,
-        d.percentageC,
-        d.percentageD,
-      ];
-      return blendColors(colors, percentages);
+      return blendColors(colors, Object.values(d.percentages));
     })
     .style("stroke", "black")
     .style("stroke-width", 1);
@@ -805,11 +805,11 @@ function drawBiaxialBlend(data) {
     .attr("dy", "0.35em")
     .style("font-size", "0.6em")
     .text(d => {
-      return d.percentageA === 0
+      return d.percentages["1"] === 0
         ? ""
-        : Number.isInteger(d.percentageA)
-        ? `${d.percentageA.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageA.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["1"])
+        ? `${d.percentages["1"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["1"].toFixed(1)}%`; // One decimal
     });
 
   pointContainer
@@ -820,11 +820,11 @@ function drawBiaxialBlend(data) {
     .attr("text-anchor", "end")
     .style("font-size", "0.6em")
     .text(d => {
-      return d.percentageB === 0
+      return d.percentages["2"] === 0
         ? ""
-        : Number.isInteger(d.percentageB)
-        ? `${d.percentageB.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageB.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["2"])
+        ? `${d.percentages["2"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["2"].toFixed(1)}%`; // One decimal
     });
 
   pointContainer
@@ -834,11 +834,11 @@ function drawBiaxialBlend(data) {
     .attr("dy", "0.35em")
     .style("font-size", "0.6em")
     .text(d => {
-      return d.percentageC === 0
+      return d.percentages["3"] === 0
         ? ""
-        : Number.isInteger(d.percentageC)
-        ? `${d.percentageC.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageC.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["3"])
+        ? `${d.percentages["3"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["3"].toFixed(1)}%`; // One decimal
     });
 
   pointContainer
@@ -849,11 +849,11 @@ function drawBiaxialBlend(data) {
     .attr("text-anchor", "end")
     .style("font-size", "0.6em")
     .text(d => {
-      return d.percentageD === 0
+      return d.percentages["4"] === 0
         ? ""
-        : Number.isInteger(d.percentageD)
-        ? `${d.percentageD.toFixed(0)}%` // No decimals for integers
-        : `${d.percentageD.toFixed(1)}%`; // One decimal
+        : Number.isInteger(d.percentages["4"])
+        ? `${d.percentages["4"].toFixed(0)}%` // No decimals for integers
+        : `${d.percentages["4"].toFixed(1)}%`; // One decimal
     });
 
   // Add text labels for milliliters
@@ -922,12 +922,13 @@ function getLinearData(numberPoints, increment, testSize) {
   d3.range(numberPoints).forEach((d, i, nodes) => {
     const point = i + 1;
     const step = increment ? increment : 100 / (nodes.length - 1);
-    const percentageA = 100 - step * i;
-    const percentageB = step * i;
-    const mlA = (percentageA / 100) * testSize;
-    const mlB = (percentageB / 100) * testSize;
+    const percentages = {};
+    percentages["1"] = 100 - step * i;
+    percentages["2"] = step * i;
+    const mlA = (percentages["1"] / 100) * testSize;
+    const mlB = (percentages["2"] / 100) * testSize;
 
-    data.push({ point, percentageA, percentageB, mlA, mlB });
+    data.push({ point, percentages, mlA, mlB });
   });
   return data;
 }
@@ -951,23 +952,22 @@ function getTriaxialData(triaxialPoints, testSize) {
       const y = row; // Vertical position
 
       // Calculate percentages for each corner of the triangle
-      const percentageA =
+      const percentages = {};
+      percentages["1"] =
         ((triaxialPoints - 1 - row) / (triaxialPoints - 1)) * 100;
-      const percentageC = (col / (triaxialPoints - 1)) * 100;
-      const percentageB = 100 - percentageA - percentageC;
+      percentages["3"] = (col / (triaxialPoints - 1)) * 100;
+      percentages["2"] = 100 - percentages["1"] - percentages["3"];
 
       // Calculate ml values based on percentages
-      const mlA = (percentageA / 100) * testSize;
-      const mlB = (percentageB / 100) * testSize;
-      const mlC = (percentageC / 100) * testSize;
+      const mlA = (percentages["1"] / 100) * testSize;
+      const mlB = (percentages["2"] / 100) * testSize;
+      const mlC = (percentages["3"] / 100) * testSize;
 
       // Add the point to the data array
       data.push({
         point: pointIndex++, // Unique point index
         position: [x, y], // Position in the triangle
-        percentageA, // Percentage for corner A
-        percentageB, // Percentage for corner B
-        percentageC, // Percentage for corner C
+        percentages,
         mlA, // Milliliters for corner A
         mlB, // Milliliters for corner B
         mlC, // Milliliters for corner C
@@ -988,33 +988,32 @@ function getTriaxialData(triaxialPoints, testSize) {
  */
 function getBiaxialData(biaxialRows, biaxialColumns, testSize) {
   const data = [];
-  d3.range(biaxialRows).forEach((d, i, rows) => {
-    d3.range(biaxialColumns).forEach((d, j, columns) => {
+  d3.range(biaxialRows).forEach((_, i, rows) => {
+    d3.range(biaxialColumns).forEach((_, j, columns) => {
       const position = [j, i];
       const point = i * columns.length + j + 1;
 
+      const percentages = {};
+
       const rowMaxAB = 100 - (100 / (rows.length - 1)) * i;
       const rowStepAB = rowMaxAB / (columns.length - 1);
-      const percentageA = Math.max(0, rowMaxAB - rowStepAB * j);
-      const percentageB = Math.max(0, rowStepAB * j);
+      percentages["1"] = Math.max(0, rowMaxAB - rowStepAB * j);
+      percentages["2"] = Math.max(0, rowStepAB * j);
 
       const rowMaxCD = (100 / (rows.length - 1)) * i;
       const rowStepCD = rowMaxCD / (columns.length - 1);
-      const percentageC = Math.max(0, rowMaxCD - rowStepCD * j);
-      const percentageD = Math.max(0, rowStepCD * j);
+      percentages["3"] = Math.max(0, rowMaxCD - rowStepCD * j);
+      percentages["4"] = Math.max(0, rowStepCD * j);
 
-      const mlA = (percentageA / 100) * testSize;
-      const mlB = (percentageB / 100) * testSize;
-      const mlC = (percentageC / 100) * testSize;
-      const mlD = (percentageD / 100) * testSize;
+      const mlA = (percentages["1"] / 100) * testSize;
+      const mlB = (percentages["2"] / 100) * testSize;
+      const mlC = (percentages["3"] / 100) * testSize;
+      const mlD = (percentages["4"] / 100) * testSize;
 
       data.push({
         position,
         point,
-        percentageA,
-        percentageB,
-        percentageC,
-        percentageD,
+        percentages,
         mlA,
         mlB,
         mlC,
@@ -1036,11 +1035,9 @@ function renderRecipesTable() {
   // Clear previous table
   document.getElementById("recipes-table-container").innerHTML = "";
 
-  console.log("loadedMaterials", loadedMaterials);
-
   const selectedMaterials = getSelectedMaterials();
-  console.log("selectedMaterials", selectedMaterials);
-  console.log("materialsById", materialsById);
+  console.log("Recipes:", recipes);
+  console.log("blendData:", blendData);
 
   const blendType = document.getElementById("blendType").value;
   let numRows = 0;
@@ -1079,12 +1076,34 @@ function renderRecipesTable() {
     <tbody>
   `;
 
-  for (let i = 1; i <= numRows; i++) {
+  for (let i = 0; i < numRows; i++) {
+    const recipeNumber = i + 1;
     html += `
       <tr>
-        <td class="border px-2 py-1 text-center">${i}</td>
+        <td class="border px-2 py-1 text-center">${recipeNumber}</td>
         ${selectedMaterials
-          .map(() => `<td class="border px-2 py-1"></td>`)
+          .map(materialId => {
+            const blend = blendData.filter(bd => bd.point === recipeNumber)[0];
+            const percentages = blend ? blend.percentages : {};
+            // percentages = {1: 30, 2: 70}
+
+            let materialPercentage = 0;
+
+            Object.entries(recipes).forEach(([key, recipe]) => {
+              const recipePercentage = percentages[key];
+
+              const a = recipe.filter(mat => mat.materialId === materialId);
+              console.log("a", a);
+              // TODO handle case where materialId is not found
+              // TODO ver qué pasa cuando aparece el mismo material dos veces en la misma receta
+              // TODO ver qué pasa si los porcentajes de la receta no suman 100
+
+              materialPercentage +=
+                a.length > 0 ? (recipePercentage * a[0].percentage) / 100 : 0;
+            });
+
+            return `<td class="border px-2 py-1">${materialPercentage}%</td>`;
+          })
           .join("")}
       </tr>
     `;
