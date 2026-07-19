@@ -1,4 +1,5 @@
 // Published in https://mi-mina.github.io/Blends/
+// https://mimina.goatcounter.com/
 
 // TODO
 
@@ -11,9 +12,10 @@
 // - Añadir automáticamente una fila nueva en las recetas cuando se rellena la última disponible
 // - Comprobar que los aditivos se calculan correctamente en las recetas
 // - Complementar el listado de materiales con https://ceramica.name/calculos/aformula
+// - Los anchos de las columnas de la tabla de recetas se reparten de forma desigual, hacer que se repartan de forma más uniforme
+// - No hacer que la tabla ocupe todo el ancho de la pantalla, sino solo el espacio necesario y pegada a la izquierda.
 
 // General:
-// - Ver si se puede añadir google analytics para ver el uso de la web
 // - Cambiar la url para que blends se escriba con minúscula
 
 // Stuhl diagram desarrollado por Derek Philip Au en d3.js
@@ -90,7 +92,9 @@ function init() {
   document
     .getElementById("clear-recipes-button")
     .addEventListener("click", () => {
-      if (confirm("¿Borrar todas las recetas? Esta acción no se puede deshacer.")) {
+      if (
+        confirm("¿Borrar todas las recetas? Esta acción no se puede deshacer.")
+      ) {
         clearAllRecipes();
       }
     });
