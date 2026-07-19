@@ -2,12 +2,6 @@
 
 // TODO
 
-// *** Meter los ml también en un objeto igual que los porcentajes
-
-// Fix:
-// cuando el número de puntos es 1, se dibuja un punto pero pone NAN
-// cuando el número de puntos es 0 o negativo no se dibuja nada, poner un mensaje de aviso para que el usuario añada más puntos
-
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos
 // - Calcular el número total de puntos
@@ -111,26 +105,62 @@ function init() {
 function drawBlend() {
   const testSize = document.getElementById("size").value;
   const blendType = document.getElementById("blendType").value;
-  const linePoints = document.getElementById("linePoints").value;
-  const triaxialPoints = document.getElementById("triaxialPoints").value;
-  const biaxialRows = document.getElementById("biaxialRows").value;
-  const biaxialColumns = document.getElementById("biaxialColumns").value;
+  const linePointsInput = document.getElementById("linePoints");
+  const triaxialPointsInput = document.getElementById("triaxialPoints");
+  const biaxialRowsInput = document.getElementById("biaxialRows");
+  const biaxialColumnsInput = document.getElementById("biaxialColumns");
 
   const increment = document.getElementById("increments")
     ? document.getElementById("increments").value
     : 0;
 
   if (blendType === "line") {
-    state.blendData = getLinearData(linePoints, increment, testSize);
+    if (!meetsMinimum(linePointsInput, "puntos")) return;
+    state.blendData = getLinearData(
+      linePointsInput.value,
+      increment,
+      testSize
+    );
     console.log("Linear Blend Data:", state.blendData);
     drawLinearBlend(state.blendData);
   } else if (blendType === "triaxial") {
-    state.blendData = getTriaxialData(triaxialPoints, testSize);
+    if (!meetsMinimum(triaxialPointsInput, "puntos")) return;
+    state.blendData = getTriaxialData(triaxialPointsInput.value, testSize);
     drawTriaxialBlend(state.blendData);
   } else if (blendType === "biaxial") {
-    state.blendData = getBiaxialData(biaxialRows, biaxialColumns, testSize);
+    if (
+      !meetsMinimum(biaxialRowsInput, "filas") ||
+      !meetsMinimum(biaxialColumnsInput, "columnas")
+    )
+      return;
+    state.blendData = getBiaxialData(
+      biaxialRowsInput.value,
+      biaxialColumnsInput.value,
+      testSize
+    );
     drawBiaxialBlend(state.blendData);
   }
 
   renderRecipesTable();
+}
+
+/**
+ * Checks an input against its own `min` attribute. If it fails, shows a
+ * warning in the graph panel instead of letting invalid data (e.g. a
+ * division by zero producing NaN) reach the draw functions.
+ * @param {HTMLInputElement} input
+ * @param {string} label - Plural noun used in the warning message.
+ * @returns {boolean}
+ */
+function meetsMinimum(input, label) {
+  const value = Number(input.value);
+  const min = Number(input.min);
+
+  if (Number.isNaN(value) || value < min) {
+    document.getElementById(
+      "graph"
+    ).innerHTML = `<p class="p-4 text-gray-600">Introduce al menos ${min} ${label} para dibujar el diagrama.</p>`;
+    return false;
+  }
+  return true;
 }
