@@ -40,45 +40,94 @@ export function populateRecipeMaterialSelects() {
   });
 }
 
-const recipe1Container = document.getElementById("recipe1");
-recipe1Container
-  .querySelectorAll('.recipe-material-select, input[type="text"]')
-  .forEach(el => {
-    el.addEventListener("change", () => {
-      state.recipes["1"] = getRecipeData("recipe1");
-      renderRecipesTable();
+const RECIPE_STORAGE_KEY = "blends-recipes";
+
+const RECIPE_CARDS = [
+  { recipeId: "recipe1", key: "1" },
+  { recipeId: "recipe2", key: "2" },
+  { recipeId: "recipe3", key: "3" },
+  { recipeId: "recipe4", key: "4" },
+];
+
+RECIPE_CARDS.forEach(({ recipeId, key }) => {
+  const container = document.getElementById(recipeId);
+  container
+    .querySelectorAll('.recipe-material-select, input[type="text"]')
+    .forEach(el => {
+      el.addEventListener("change", () => {
+        state.recipes[key] = getRecipeData(recipeId);
+        saveRecipesToLocalStorage();
+        renderRecipesTable();
+      });
     });
+});
+
+function saveRecipesToLocalStorage() {
+  localStorage.setItem(RECIPE_STORAGE_KEY, JSON.stringify(state.recipes));
+}
+
+/**
+ * Restores previously saved recipe selections into the DOM. Relies on
+ * the existing "change" listeners above to update state.recipes and
+ * re-render the table, so it must run after populateRecipeMaterialSelects()
+ * (selects need real <option>s for `.value = materialId` to take) and
+ * after the first drawBlend() (state.blendData must exist before
+ * renderRecipesTable() runs).
+ */
+export function loadRecipesFromLocalStorage() {
+  const saved = localStorage.getItem(RECIPE_STORAGE_KEY);
+  if (!saved) return;
+
+  let savedRecipes;
+  try {
+    savedRecipes = JSON.parse(saved);
+  } catch {
+    return;
+  }
+
+  RECIPE_CARDS.forEach(({ recipeId, key }) => {
+    const recipeData = savedRecipes[key];
+    if (!recipeData) return;
+
+    const container = document.getElementById(recipeId);
+    const selects = container.querySelectorAll(".recipe-material-select");
+    const inputs = container.querySelectorAll('input[type="text"]');
+
+    recipeData.forEach((row, i) => {
+      if (selects[i]) {
+        selects[i].value = row.materialId;
+        selects[i].dispatchEvent(new Event("change"));
+      }
+      if (inputs[i]) {
+        inputs[i].value = row.percentage;
+        inputs[i].dispatchEvent(new Event("change"));
+      }
+    });
+  });
+}
+
+/**
+ * Clears every recipe card (selects and % inputs), the in-memory
+ * state.recipes, and the saved copy in localStorage.
+ */
+export function clearAllRecipes() {
+  RECIPE_CARDS.forEach(({ recipeId, key }) => {
+    const container = document.getElementById(recipeId);
+
+    container.querySelectorAll(".recipe-material-select").forEach(select => {
+      select.value = "";
+      select.classList.add("text-gray-400");
+    });
+    container.querySelectorAll('input[type="text"]').forEach(input => {
+      input.value = "";
+    });
+
+    state.recipes[key] = getRecipeData(recipeId);
   });
 
-const recipe2Container = document.getElementById("recipe2");
-recipe2Container
-  .querySelectorAll('.recipe-material-select, input[type="text"]')
-  .forEach(el => {
-    el.addEventListener("change", () => {
-      state.recipes["2"] = getRecipeData("recipe2");
-      renderRecipesTable();
-    });
-  });
-
-const recipe3Container = document.getElementById("recipe3");
-recipe3Container
-  .querySelectorAll('.recipe-material-select, input[type="text"]')
-  .forEach(el => {
-    el.addEventListener("change", () => {
-      state.recipes["3"] = getRecipeData("recipe3");
-      renderRecipesTable();
-    });
-  });
-
-const recipe4Container = document.getElementById("recipe4");
-recipe4Container
-  .querySelectorAll('.recipe-material-select, input[type="text"]')
-  .forEach(el => {
-    el.addEventListener("change", () => {
-      state.recipes["4"] = getRecipeData("recipe4");
-      renderRecipesTable();
-    });
-  });
+  localStorage.removeItem(RECIPE_STORAGE_KEY);
+  renderRecipesTable();
+}
 
 /**
  * Retrieves the recipe data from the specified recipe card.

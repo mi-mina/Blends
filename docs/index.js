@@ -4,12 +4,10 @@
 
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos
-// - Download blend as pdf or image
 // - Hacer que se oculte la parte de la izquierda
 // - Poder elegir los colores de las esquinas
 
 // Recipes:
-// - El listado de materiales no está ordenado alfabéticamente en Español
 // - Añadir automáticamente una fila nueva en las recetas cuando se rellena la última disponible
 // - Comprobar que los aditivos se calculan correctamente en las recetas
 // - Complementar el listado de materiales con https://ceramica.name/calculos/aformula
@@ -36,6 +34,8 @@ import {
 import {
   populateRecipeMaterialSelects,
   renderRecipesTable,
+  loadRecipesFromLocalStorage,
+  clearAllRecipes,
 } from "./js/recipes.js";
 import { updateBlendInputs, updateRecipeCards, showTab } from "./js/ui.js";
 import { downloadDiagramAsPng, downloadRecipesAsCsv } from "./js/download.js";
@@ -87,6 +87,14 @@ function init() {
     }
   });
 
+  document
+    .getElementById("clear-recipes-button")
+    .addEventListener("click", () => {
+      if (confirm("¿Borrar todas las recetas? Esta acción no se puede deshacer.")) {
+        clearAllRecipes();
+      }
+    });
+
   // Event listeners for input validation
   document.getElementById("linePoints").addEventListener("input", event => {
     const numberPoints = event.target.value;
@@ -107,6 +115,9 @@ function init() {
 
   // Initial draw on page load
   drawBlend();
+
+  // Restore saved recipe selections now that state.blendData exists
+  loadRecipesFromLocalStorage();
 }
 
 /**

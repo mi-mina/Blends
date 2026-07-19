@@ -6,9 +6,15 @@ import { state } from "./state.js";
  */
 export function loadMaterials() {
   return d3.json("data/materials.json").then(data => {
-    state.loadedMaterials = data;
-    state.materialsById = getMaterialsById(data);
+    state.loadedMaterials = sortMaterialsByName(data);
+    state.materialsById = getMaterialsById(state.loadedMaterials);
   });
+}
+
+function sortMaterialsByName(materials) {
+  return [...materials].sort((a, b) =>
+    a.materialName_es.localeCompare(b.materialName_es, "es")
+  );
 }
 
 export function getMaterialsById(loadedMaterials) {
