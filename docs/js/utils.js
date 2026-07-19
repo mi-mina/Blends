@@ -38,8 +38,8 @@ export function blendColors(colors, percentages) {
  * noise (e.g. 19.999999999999996) doesn't produce a spurious ".0".
  */
 export function formatNumber(value, decimals = 1) {
-  if (value === 0) return "";
   const rounded = Number(value.toFixed(decimals));
+  if (rounded === 0) return "";
   return Number.isInteger(rounded)
     ? rounded.toFixed(0)
     : rounded.toFixed(decimals);

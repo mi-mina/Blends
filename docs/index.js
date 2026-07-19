@@ -6,7 +6,6 @@
 
 // Fix:
 // - El diagrama de línea ajustarlo para que no quede como flotando
-// - Hay veces que muestra un decimal aunque sea cero.
 
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos

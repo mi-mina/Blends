@@ -17,10 +17,11 @@ export function getLinearData(numberPoints, increment, testSize) {
     const percentages = {};
     percentages["1"] = 100 - step * i;
     percentages["2"] = step * i;
-    const mlA = (percentages["1"] / 100) * testSize;
-    const mlB = (percentages["2"] / 100) * testSize;
+    const ml = {};
+    ml["1"] = (percentages["1"] / 100) * testSize;
+    ml["2"] = (percentages["2"] / 100) * testSize;
 
-    data.push({ point, percentages, mlA, mlB });
+    data.push({ point, percentages, ml });
   });
   return data;
 }
@@ -51,18 +52,17 @@ export function getTriaxialData(triaxialPoints, testSize) {
       percentages["2"] = 100 - percentages["1"] - percentages["3"];
 
       // Calculate ml values based on percentages
-      const mlA = (percentages["1"] / 100) * testSize;
-      const mlB = (percentages["2"] / 100) * testSize;
-      const mlC = (percentages["3"] / 100) * testSize;
+      const ml = {};
+      ml["1"] = (percentages["1"] / 100) * testSize;
+      ml["2"] = (percentages["2"] / 100) * testSize;
+      ml["3"] = (percentages["3"] / 100) * testSize;
 
       // Add the point to the data array
       data.push({
         point: pointIndex++, // Unique point index
         position: [x, y], // Position in the triangle
         percentages,
-        mlA, // Milliliters for corner A
-        mlB, // Milliliters for corner B
-        mlC, // Milliliters for corner C
+        ml,
       });
     }
   }
@@ -97,19 +97,17 @@ export function getBiaxialData(biaxialRows, biaxialColumns, testSize) {
       percentages["3"] = Math.max(0, rowMaxCD - rowStepCD * j);
       percentages["4"] = Math.max(0, rowStepCD * j);
 
-      const mlA = (percentages["1"] / 100) * testSize;
-      const mlB = (percentages["2"] / 100) * testSize;
-      const mlC = (percentages["3"] / 100) * testSize;
-      const mlD = (percentages["4"] / 100) * testSize;
+      const ml = {};
+      ml["1"] = (percentages["1"] / 100) * testSize;
+      ml["2"] = (percentages["2"] / 100) * testSize;
+      ml["3"] = (percentages["3"] / 100) * testSize;
+      ml["4"] = (percentages["4"] / 100) * testSize;
 
       data.push({
         position,
         point,
         percentages,
-        mlA,
-        mlB,
-        mlC,
-        mlD,
+        ml,
       });
     });
   });
