@@ -4,7 +4,7 @@ export const sep = 15;
 export const margin = {
   top: pointSide,
   right: pointSide,
-  bottom: 0,
+  bottom: pointSide,
   left: pointSide,
 };
 

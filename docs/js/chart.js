@@ -74,7 +74,15 @@ const CORNER_LAYOUTS = {
 };
 
 /**
- * Draws a blend chart: clears the SVG, lays out one group per point using
+ * Removes the previous diagram before measuring #graph, so a leftover
+ * scrollbar from it can't skew the size measured for the new one.
+ */
+function clearGraph() {
+  d3.select(`#graph`).selectAll("*").remove();
+}
+
+/**
+ * Draws a blend chart: lays out one group per point using
  * `pointTransform`, and renders the corner boxes/circle/labels from
  * `corners` (one of CORNER_LAYOUTS[2|3|4]). The geometry that genuinely
  * differs between blend types (SVG size, point positions) is passed in by
@@ -91,9 +99,6 @@ function renderBlendChart(
   data,
   { corners, svgWidth, svgHeight, chartTransform, pointTransform }
 ) {
-  // Clear previous SVG elements
-  d3.select(`#graph`).selectAll("*").remove();
-
   const svg = d3
     .select(`#graph`)
     .append("svg")
@@ -174,6 +179,8 @@ function renderBlendChart(
  * @description Each object in the data array should contain the point index, percentages for each corner, and milliliters for each corner.
  */
 export function drawLinearBlend(data) {
+  clearGraph();
+
   const container = document.getElementById("graph");
   const maxWidth =
     pointSide * data.length +
@@ -182,7 +189,7 @@ export function drawLinearBlend(data) {
     margin.right;
 
   const svgWidth = Math.max(container.clientWidth, maxWidth);
-  const svgHeight = window.innerHeight;
+  const svgHeight = pointSide * 2 + margin.top + margin.bottom;
 
   renderBlendChart(data, {
     corners: CORNER_LAYOUTS[2],
@@ -205,17 +212,24 @@ export function drawLinearBlend(data) {
  * @description Each object in the data array should contain the point index, position in the triangle, percentages for each corner, and milliliters for each corner.
  */
 export function drawTriaxialBlend(data) {
+  clearGraph();
+
   const numberOfRows = data[data.length - 1].position[1] + 1;
 
   const container = document.getElementById("graph");
-  const maxWidth =
+  const contentWidth =
     pointSide * 2 * numberOfRows +
     sep * (numberOfRows - 1) +
     margin.left +
     margin.right;
+  const contentHeight =
+    pointSide * 2 * numberOfRows +
+    sep * (numberOfRows - 1) +
+    margin.top +
+    margin.bottom;
 
-  const svgWidth = Math.max(container.clientWidth, maxWidth);
-  const svgHeight = Math.max(window.innerHeight, maxWidth);
+  const svgWidth = Math.max(container.clientWidth, contentWidth);
+  const svgHeight = contentHeight;
 
   // Scale to position points in a triangular grid
   const xScale = pointSide * 2 + sep;
@@ -241,19 +255,27 @@ export function drawTriaxialBlend(data) {
  * @description Each object in the data array should contain the position, point index, percentages for each corner, and milliliters for each corner.
  */
 export function drawBiaxialBlend(data) {
+  clearGraph();
+
   console.log("Drawing Biaxial Blend with data:", data);
 
-  const numberOfRows = Math.sqrt(data.length);
+  const numberOfRows = Math.max(...data.map(d => d.position[1])) + 1;
+  const numberOfColumns = Math.max(...data.map(d => d.position[0])) + 1;
 
   const container = document.getElementById("graph");
-  const maxSize =
-    pointSide * 2 * numberOfRows +
-    sep * (numberOfRows - 1) +
+  const contentWidth =
+    pointSide * 2 * numberOfColumns +
+    sep * (numberOfColumns - 1) +
     margin.left +
     margin.right;
+  const contentHeight =
+    pointSide * 2 * numberOfRows +
+    sep * (numberOfRows - 1) +
+    margin.top +
+    margin.bottom;
 
-  const svgWidth = Math.max(container.clientWidth, maxSize);
-  const svgHeight = Math.max(window.innerHeight, maxSize);
+  const svgWidth = Math.max(container.clientWidth, contentWidth);
+  const svgHeight = contentHeight;
 
   renderBlendChart(data, {
     corners: CORNER_LAYOUTS[4],

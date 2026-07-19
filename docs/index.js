@@ -5,7 +5,8 @@
 // *** Meter los ml también en un objeto igual que los porcentajes
 
 // Fix:
-// - El diagrama de línea ajustarlo para que no quede como flotando
+// cuando el número de puntos es 1, se dibuja un punto pero pone NAN
+// cuando el número de puntos es 0 o negativo no se dibuja nada, poner un mensaje de aviso para que el usuario añada más puntos
 
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos
