@@ -4,16 +4,14 @@
 
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos
-// - Calcular el número total de puntos
-// - Nombrar con letras los esmaltes de las esquinas, por ejemplo A, B, C, D
 // - Download blend as pdf or image
 // - Hacer que se oculte la parte de la izquierda
 // - Poder elegir los colores de las esquinas
 
 // Recipes:
-// - Añadir tabla con el cálculo de las recetas
+// - El listado de materiales no está ordenado alfabéticamente en Español
 // - Añadir automáticamente una fila nueva en las recetas cuando se rellena la última disponible
-// - Añadir columna con checkbox para marcar los ingredientes que son aditivos
+// - Comprobar que los aditivos se calculan correctamente en las recetas
 // - Complementar el listado de materiales con https://ceramica.name/calculos/aformula
 
 // General:
@@ -40,6 +38,7 @@ import {
   renderRecipesTable,
 } from "./js/recipes.js";
 import { updateBlendInputs, updateRecipeCards, showTab } from "./js/ui.js";
+import { downloadDiagramAsPng, downloadRecipesAsCsv } from "./js/download.js";
 
 loadMaterials()
   .then(() => {
@@ -74,6 +73,18 @@ function init() {
   });
   document.getElementById("tab-recipes").addEventListener("click", function () {
     showTab("recipes");
+  });
+
+  document.getElementById("download-button").addEventListener("click", () => {
+    const onGraphTab = !document
+      .getElementById("tab-content-graph")
+      .classList.contains("hidden");
+
+    if (onGraphTab) {
+      downloadDiagramAsPng();
+    } else {
+      downloadRecipesAsCsv();
+    }
   });
 
   // Event listeners for input validation
@@ -116,11 +127,7 @@ function drawBlend() {
 
   if (blendType === "line") {
     if (!meetsMinimum(linePointsInput, "puntos")) return;
-    state.blendData = getLinearData(
-      linePointsInput.value,
-      increment,
-      testSize
-    );
+    state.blendData = getLinearData(linePointsInput.value, increment, testSize);
     console.log("Linear Blend Data:", state.blendData);
     drawLinearBlend(state.blendData);
   } else if (blendType === "triaxial") {
@@ -136,7 +143,7 @@ function drawBlend() {
     state.blendData = getBiaxialData(
       biaxialRowsInput.value,
       biaxialColumnsInput.value,
-      testSize
+      testSize,
     );
     drawBiaxialBlend(state.blendData);
   }
@@ -157,9 +164,8 @@ function meetsMinimum(input, label) {
   const min = Number(input.min);
 
   if (Number.isNaN(value) || value < min) {
-    document.getElementById(
-      "graph"
-    ).innerHTML = `<p class="p-4 text-gray-600">Introduce al menos ${min} ${label} para dibujar el diagrama.</p>`;
+    document.getElementById("graph").innerHTML =
+      `<p class="p-4 text-gray-600">Introduce al menos ${min} ${label} para dibujar el diagrama.</p>`;
     return false;
   }
   return true;

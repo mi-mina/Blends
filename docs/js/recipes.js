@@ -110,6 +110,36 @@ export function getRecipeData(recipeId) {
 ///////////////////////////////////////////////////////////////////////////////
 // Recipes Table  functions ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Computes what percentage of a given material ends up in the blend at a
+ * specific point, by combining each recipe's material percentage with how
+ * much of that recipe's corner is present at that point.
+ * @param {number} point - Point number, as in blendData[].point.
+ * @param {string} materialId
+ * @returns {number}
+ */
+export function getMaterialPercentageAtPoint(point, materialId) {
+  const blend = state.blendData.filter(bd => bd.point === point)[0];
+  const percentages = blend ? blend.percentages : {};
+
+  let materialPercentage = 0;
+
+  Object.entries(state.recipes).forEach(([key, recipe]) => {
+    const recipePercentage = percentages[key];
+
+    const a = recipe.filter(mat => mat.materialId === materialId);
+    // TODO handle case where materialId is not found
+    // TODO ver qué pasa cuando aparece el mismo material dos veces en la misma receta
+    // TODO ver qué pasa si los porcentajes de la receta no suman 100
+
+    materialPercentage +=
+      a.length > 0 ? (recipePercentage * a[0].percentage) / 100 : 0;
+  });
+
+  return materialPercentage;
+}
+
 /**
  * Renders the recipes table based on the selected materials and blend type.
  * @description This function generates a table with the selected materials as columns and the number of rows based on the blend type.
@@ -166,27 +196,10 @@ export function renderRecipesTable() {
         <td class="border px-2 py-1 text-center">${recipeNumber}</td>
         ${selectedMaterials
           .map(materialId => {
-            const blend = state.blendData.filter(
-              bd => bd.point === recipeNumber
-            )[0];
-            const percentages = blend ? blend.percentages : {};
-            // percentages = {1: 30, 2: 70}
-
-            let materialPercentage = 0;
-
-            Object.entries(state.recipes).forEach(([key, recipe]) => {
-              const recipePercentage = percentages[key];
-
-              const a = recipe.filter(mat => mat.materialId === materialId);
-              console.log("a", a);
-              // TODO handle case where materialId is not found
-              // TODO ver qué pasa cuando aparece el mismo material dos veces en la misma receta
-              // TODO ver qué pasa si los porcentajes de la receta no suman 100
-
-              materialPercentage +=
-                a.length > 0 ? (recipePercentage * a[0].percentage) / 100 : 0;
-            });
-
+            const materialPercentage = getMaterialPercentageAtPoint(
+              recipeNumber,
+              materialId
+            );
             return `<td class="border px-2 py-1">${roundTo(
               materialPercentage
             )}%</td>`;

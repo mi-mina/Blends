@@ -114,7 +114,8 @@ function renderBlendChart(
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight)
-    .style("user-select", "none");
+    .style("user-select", "none")
+    .style("font-family", "ui-sans-serif, system-ui, sans-serif");
 
   const chartContainer = svg.append("g").attr("transform", chartTransform);
 
@@ -205,14 +206,11 @@ function renderBlendChart(
 export function drawLinearBlend(data) {
   clearGraph();
 
-  const container = document.getElementById("graph");
-  const maxWidth =
+  const svgWidth =
     pointSide * data.length +
     sep * (data.length - 1) +
     margin.left +
     margin.right;
-
-  const svgWidth = Math.max(container.clientWidth, maxWidth);
   const svgHeight = pointSide * 2 + margin.top + margin.bottom;
 
   const cornerLabels = new Map([
@@ -252,20 +250,16 @@ export function drawTriaxialBlend(data) {
 
   const numberOfRows = data[data.length - 1].position[1] + 1;
 
-  const container = document.getElementById("graph");
-  const contentWidth =
+  const svgWidth =
     pointSide * 2 * numberOfRows +
     sep * (numberOfRows - 1) +
     margin.left +
     margin.right;
-  const contentHeight =
+  const svgHeight =
     pointSide * 2 * numberOfRows +
     sep * (numberOfRows - 1) +
     margin.top +
     margin.bottom;
-
-  const svgWidth = Math.max(container.clientWidth, contentWidth);
-  const svgHeight = contentHeight;
 
   // Scale to position points in a triangular grid
   const xScale = pointSide * 2 + sep;
@@ -332,20 +326,16 @@ export function drawBiaxialBlend(data) {
   const numberOfRows = Math.max(...data.map(d => d.position[1])) + 1;
   const numberOfColumns = Math.max(...data.map(d => d.position[0])) + 1;
 
-  const container = document.getElementById("graph");
-  const contentWidth =
+  const svgWidth =
     pointSide * 2 * numberOfColumns +
     sep * (numberOfColumns - 1) +
     margin.left +
     margin.right;
-  const contentHeight =
+  const svgHeight =
     pointSide * 2 * numberOfRows +
     sep * (numberOfRows - 1) +
     margin.top +
     margin.bottom;
-
-  const svgWidth = Math.max(container.clientWidth, contentWidth);
-  const svgHeight = contentHeight;
 
   const topLeft = data.find(d => d.position[0] === 0 && d.position[1] === 0);
   const topRight = data.find(
