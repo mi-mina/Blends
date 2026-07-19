@@ -94,10 +94,20 @@ function clearGraph() {
  * @param {number} options.svgHeight
  * @param {string} options.chartTransform
  * @param {Function} options.pointTransform - (d, i) => transform string.
+ * @param {Map<number, Object>} [options.cornerLabels] - Maps a point number
+ * to { letter, x, y, anchor } for the pure corner it represents. x/y are
+ * relative to that point's own origin, positioned outside its boxes.
  */
 function renderBlendChart(
   data,
-  { corners, svgWidth, svgHeight, chartTransform, pointTransform }
+  {
+    corners,
+    svgWidth,
+    svgHeight,
+    chartTransform,
+    pointTransform,
+    cornerLabels,
+  }
 ) {
   const svg = d3
     .select(`#graph`)
@@ -148,6 +158,20 @@ function renderBlendChart(
     .attr("text-anchor", "middle")
     .text(d => d.point);
 
+  // Corner letter (A, B, C, D), outside the pure corner points only
+  if (cornerLabels && cornerLabels.size) {
+    const cornerText = pointContainer
+      .filter(d => cornerLabels.has(d.point))
+      .append("text")
+      .attr("x", d => cornerLabels.get(d.point).x)
+      .attr("y", d => cornerLabels.get(d.point).y)
+      .attr("dy", "0.35em")
+      .attr("text-anchor", d => cornerLabels.get(d.point).anchor)
+      .style("font-size", "1.5em")
+      .style("font-weight", "bold");
+    cornerText.text(d => cornerLabels.get(d.point).letter);
+  }
+
   // Percentage labels
   corners.percentageLabels.forEach(label => {
     const text = pointContainer
@@ -191,6 +215,17 @@ export function drawLinearBlend(data) {
   const svgWidth = Math.max(container.clientWidth, maxWidth);
   const svgHeight = pointSide * 2 + margin.top + margin.bottom;
 
+  const cornerLabels = new Map([
+    [
+      data[0].point,
+      { letter: "A", x: -(pointSide / 2 + 14), y: 0, anchor: "end" },
+    ],
+    [
+      data[data.length - 1].point,
+      { letter: "B", x: pointSide / 2 + 14, y: 0, anchor: "start" },
+    ],
+  ]);
+
   renderBlendChart(data, {
     corners: CORNER_LAYOUTS[2],
     svgWidth,
@@ -203,6 +238,7 @@ export function drawLinearBlend(data) {
       const y = pointSide / 2;
       return `translate(${x}, ${y})`;
     },
+    cornerLabels,
   });
 }
 
@@ -235,6 +271,39 @@ export function drawTriaxialBlend(data) {
   const xScale = pointSide * 2 + sep;
   const yScale = pointSide * 2 + sep;
 
+  const apex = data.find(d => d.position[0] === 0 && d.position[1] === 0);
+  const baseLeft = data.find(
+    d => d.position[0] === 0 && d.position[1] === numberOfRows - 1
+  );
+  const baseRight = data.find(
+    d =>
+      d.position[0] === numberOfRows - 1 && d.position[1] === numberOfRows - 1
+  );
+  const cornerLabels = new Map([
+    [
+      apex.point,
+      { letter: "A", x: 0, y: -(pointSide + 14), anchor: "middle" },
+    ],
+    [
+      baseLeft.point,
+      {
+        letter: "B",
+        x: -(pointSide + 14),
+        y: pointSide / 2,
+        anchor: "end",
+      },
+    ],
+    [
+      baseRight.point,
+      {
+        letter: "C",
+        x: pointSide + 14,
+        y: pointSide / 2,
+        anchor: "start",
+      },
+    ],
+  ]);
+
   renderBlendChart(data, {
     corners: CORNER_LAYOUTS[3],
     svgWidth,
@@ -246,6 +315,7 @@ export function drawTriaxialBlend(data) {
       const y = d.position[1] * yScale;
       return `translate(${x}, ${y})`;
     },
+    cornerLabels,
   });
 }
 
@@ -277,6 +347,57 @@ export function drawBiaxialBlend(data) {
   const svgWidth = Math.max(container.clientWidth, contentWidth);
   const svgHeight = contentHeight;
 
+  const topLeft = data.find(d => d.position[0] === 0 && d.position[1] === 0);
+  const topRight = data.find(
+    d => d.position[0] === numberOfColumns - 1 && d.position[1] === 0
+  );
+  const bottomLeft = data.find(
+    d => d.position[0] === 0 && d.position[1] === numberOfRows - 1
+  );
+  const bottomRight = data.find(
+    d =>
+      d.position[0] === numberOfColumns - 1 &&
+      d.position[1] === numberOfRows - 1
+  );
+  const cornerLabels = new Map([
+    [
+      topLeft.point,
+      {
+        letter: "A",
+        x: -(pointSide + 14),
+        y: -pointSide / 2,
+        anchor: "end",
+      },
+    ],
+    [
+      topRight.point,
+      {
+        letter: "B",
+        x: pointSide + 14,
+        y: -pointSide / 2,
+        anchor: "start",
+      },
+    ],
+    [
+      bottomLeft.point,
+      {
+        letter: "C",
+        x: -(pointSide + 14),
+        y: pointSide / 2,
+        anchor: "end",
+      },
+    ],
+    [
+      bottomRight.point,
+      {
+        letter: "D",
+        x: pointSide + 14,
+        y: pointSide / 2,
+        anchor: "start",
+      },
+    ],
+  ]);
+
   renderBlendChart(data, {
     corners: CORNER_LAYOUTS[4],
     svgWidth,
@@ -287,5 +408,6 @@ export function drawBiaxialBlend(data) {
       const y = d.position[1] * (pointSide * 2 + sep);
       return `translate(${x}, ${y})`;
     },
+    cornerLabels,
   });
 }

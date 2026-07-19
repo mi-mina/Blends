@@ -1,11 +1,15 @@
 export const pointSide = 54;
 export const pointR = 15;
 export const sep = 15;
+
+// Room reserved around the diagram for the corner letters (A, B, C, D),
+// which sit outside the outermost points.
+const cornerLabelSpace = 56;
 export const margin = {
-  top: pointSide,
-  right: pointSide,
-  bottom: pointSide,
-  left: pointSide,
+  top: pointSide + cornerLabelSpace,
+  right: pointSide + cornerLabelSpace,
+  bottom: pointSide + cornerLabelSpace,
+  left: pointSide + cornerLabelSpace,
 };
 
 export const colorA = "#f15bb5";
