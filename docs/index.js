@@ -141,18 +141,17 @@ function drawBlend() {
     : 0;
 
   if (blendType === "line") {
-    if (!meetsMinimum(linePointsInput, "puntos")) return;
+    if (!meetsRange(linePointsInput, "puntos")) return;
     state.blendData = getLinearData(linePointsInput.value, increment, testSize);
-    console.log("Linear Blend Data:", state.blendData);
     drawLinearBlend(state.blendData);
   } else if (blendType === "triaxial") {
-    if (!meetsMinimum(triaxialPointsInput, "puntos")) return;
+    if (!meetsRange(triaxialPointsInput, "puntos")) return;
     state.blendData = getTriaxialData(triaxialPointsInput.value, testSize);
     drawTriaxialBlend(state.blendData);
   } else if (blendType === "biaxial") {
     if (
-      !meetsMinimum(biaxialRowsInput, "filas") ||
-      !meetsMinimum(biaxialColumnsInput, "columnas")
+      !meetsRange(biaxialRowsInput, "filas") ||
+      !meetsRange(biaxialColumnsInput, "columnas")
     )
       return;
     state.blendData = getBiaxialData(
@@ -167,20 +166,23 @@ function drawBlend() {
 }
 
 /**
- * Checks an input against its own `min` attribute. If it fails, shows a
- * warning in the graph panel instead of letting invalid data (e.g. a
- * division by zero producing NaN) reach the draw functions.
+ * Checks an input against its own `min`/`max` attributes. If it fails,
+ * shows a warning in the graph panel instead of letting invalid data
+ * (e.g. a division by zero producing NaN, or an unreasonably large
+ * number of points freezing the page) reach the draw functions.
  * @param {HTMLInputElement} input
  * @param {string} label - Plural noun used in the warning message.
  * @returns {boolean}
  */
-function meetsMinimum(input, label) {
+function meetsRange(input, label) {
   const value = Number(input.value);
   const min = Number(input.min);
+  const max = input.max === "" ? Infinity : Number(input.max);
 
-  if (Number.isNaN(value) || value < min) {
+  if (Number.isNaN(value) || value < min || value > max) {
+    const range = Number.isFinite(max) ? `entre ${min} y ${max}` : `al menos ${min}`;
     document.getElementById("graph").innerHTML =
-      `<p class="p-4 text-gray-600">Introduce al menos ${min} ${label} para dibujar el diagrama.</p>`;
+      `<p class="p-4 text-gray-600">Introduce ${range} ${label} para dibujar el diagrama.</p>`;
     return false;
   }
   return true;

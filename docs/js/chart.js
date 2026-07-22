@@ -321,8 +321,6 @@ export function drawTriaxialBlend(data) {
 export function drawBiaxialBlend(data) {
   clearGraph();
 
-  console.log("Drawing Biaxial Blend with data:", data);
-
   const numberOfRows = Math.max(...data.map(d => d.position[1])) + 1;
   const numberOfColumns = Math.max(...data.map(d => d.position[0])) + 1;
 

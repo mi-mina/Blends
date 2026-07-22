@@ -169,7 +169,9 @@ export function getRecipeData(recipeId) {
  * @returns {number}
  */
 export function getMaterialPercentageAtPoint(point, materialId) {
-  const blend = state.blendData.filter(bd => bd.point === point)[0];
+  // blendData is always generated with sequential point numbers starting
+  // at 1 (see blendData.js), so its index in the array is point - 1.
+  const blend = state.blendData[point - 1];
   const percentages = blend ? blend.percentages : {};
 
   let materialPercentage = 0;
@@ -194,16 +196,11 @@ export function getMaterialPercentageAtPoint(point, materialId) {
  * @description This function generates a table with the selected materials as columns and the number of rows based on the blend type.
  */
 export function renderRecipesTable() {
-  // Clear previous table
-  document.getElementById("recipes-table-container").innerHTML = "";
-
+  const container = document.getElementById("recipes-table-container");
   const selectedMaterials = getSelectedMaterials();
-  console.log("Recipes:", state.recipes);
-  console.log("blendData:", state.blendData);
-
   const blendType = document.getElementById("blendType").value;
-  let numRows = 0;
 
+  let numRows = 0;
   if (blendType === "line") {
     numRows = Number(document.getElementById("linePoints").value) || 0;
   } else if (blendType === "triaxial") {
@@ -215,13 +212,10 @@ export function renderRecipesTable() {
     numRows = rows * cols;
   }
 
-  const container = document.getElementById("recipes-table-container");
-  if (numRows === 0) {
+  if (numRows === 0 || selectedMaterials.length === 0) {
     container.innerHTML = "";
     return;
   }
-
-  if (selectedMaterials.length === 0) return;
 
   let html = `<table class="min-w-full border border-gray-300 text-sm">
     <thead>

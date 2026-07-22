@@ -60,30 +60,18 @@ export function updateRecipeCards(blendType = "line") {
  */
 export function showTab(tab, onShowGraph) {
   // Tab buttons
-  document
-    .getElementById("tab-graph")
-    .classList.toggle("border-blue-500", tab === "graph");
-  document
-    .getElementById("tab-graph")
-    .classList.toggle("text-blue-600", tab === "graph");
-  document
-    .getElementById("tab-graph")
-    .classList.toggle("border-transparent", tab !== "graph");
-  document
-    .getElementById("tab-graph")
-    .classList.toggle("text-gray-600", tab !== "graph");
-  document
-    .getElementById("tab-recipes")
-    .classList.toggle("border-blue-500", tab === "recipes");
-  document
-    .getElementById("tab-recipes")
-    .classList.toggle("text-blue-600", tab === "recipes");
-  document
-    .getElementById("tab-recipes")
-    .classList.toggle("border-transparent", tab !== "recipes");
-  document
-    .getElementById("tab-recipes")
-    .classList.toggle("text-gray-600", tab !== "recipes");
+  const tabGraph = document.getElementById("tab-graph");
+  tabGraph.classList.toggle("border-blue-500", tab === "graph");
+  tabGraph.classList.toggle("text-blue-600", tab === "graph");
+  tabGraph.classList.toggle("border-transparent", tab !== "graph");
+  tabGraph.classList.toggle("text-gray-600", tab !== "graph");
+
+  const tabRecipes = document.getElementById("tab-recipes");
+  tabRecipes.classList.toggle("border-blue-500", tab === "recipes");
+  tabRecipes.classList.toggle("text-blue-600", tab === "recipes");
+  tabRecipes.classList.toggle("border-transparent", tab !== "recipes");
+  tabRecipes.classList.toggle("text-gray-600", tab !== "recipes");
+
   // Tab contents
   document
     .getElementById("tab-content-graph")
