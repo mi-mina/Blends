@@ -9,27 +9,48 @@ import { colorA, colorB, colorC, colorD } from "./constants.js";
   const container = document.getElementById("banner");
   if (!container) return;
 
+  // Catálogo de formas disponibles (n, grad). Puede tener más de tres;
+  // en cada carga del banner se eligen tres al azar sin repetirse.
+  const shapeOptions = [
+    { n: 300, grad: 171425 },
+    { n: 300, grad: 37063 },
+    { n: 299, grad: 74500 },
+    { n: 299, grad: 74375 },
+    { n: 299, grad: 73750 },
+    { n: 298, grad: 73874 },
+    { n: 300, grad: 171000 },
+    { n: 300, grad: 168313 },
+    { n: 300, grad: 168250 },
+    { n: 300, grad: 166666 },
+  ];
+
+  // Tres huecos de posición fijos (izquierda/centro/derecha).
   // xFrac/yFrac: centro como fracción del ancho/alto del canvas.
   // rFrac: radio exterior como fracción del alto del canvas (el alto
   // es la dimensión que manda para que el recorte quede bien en
   // pantallas anchas).
-  const spirographs = [
-    { n: 299, grad: 74375, xFrac: 0.15, yFrac: 0.2, rFrac: 1.4 },
-    { n: 300, grad: 37063, xFrac: 0.5, yFrac: 0.8, rFrac: 1.3 },
-    { n: 300, grad: 29550, xFrac: 0.85, yFrac: 0.3, rFrac: 1.3 },
+  const positions = [
+    { xFrac: 0.15, yFrac: 0.1, rFrac: 1.3 },
+    { xFrac: 0.5, yFrac: 0.8, rFrac: 1.5 },
+    { xFrac: 0.85, yFrac: 0.3, rFrac: 1.2 },
   ];
 
   const palette = [colorA, colorB, colorC, colorD];
 
+  // count elementos distintos al azar de array.
+  function pickDistinct(array, count) {
+    const shuffled = [...array].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  }
+
   // Dos colores distintos al azar de la paleta de la app.
   function pickTwoDistinctColors() {
-    const shuffled = [...palette].sort(() => Math.random() - 0.5);
-    return [shuffled[0], shuffled[1]];
+    return pickDistinct(palette, 2);
   }
 
   // Transparencia aplicada al trazo para matizar los colores vivos de
   // la app sobre el fondo blanco del banner (0-1).
-  const strokeAlpha = 0.55;
+  const strokeAlpha = 0.35;
 
   // p.color("#rrggbb", alpha) no aplica el alpha (esa sobrecarga es
   // solo para valores de gris numéricos), así que convertimos a rgba()
@@ -42,6 +63,8 @@ import { colorA, colorB, colorC, colorD } from "./constants.js";
   }
 
   const sketch = p => {
+    let spirographs = [];
+
     function drawSpirograph(cx, cy, outerR, n, grad, colors) {
       const r = 0.5;
       const innerR = outerR * r;
@@ -77,9 +100,12 @@ import { colorA, colorB, colorC, colorD } from "./constants.js";
       c.parent(container);
       p.noLoop();
 
-      for (const s of spirographs) {
-        s.colors = pickTwoDistinctColors();
-      }
+      const shapes = pickDistinct(shapeOptions, positions.length);
+      spirographs = positions.map((pos, i) => ({
+        ...pos,
+        ...shapes[i],
+        colors: pickTwoDistinctColors(),
+      }));
     };
 
     p.draw = () => {
