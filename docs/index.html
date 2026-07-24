@@ -20,14 +20,14 @@
       class="relative w-full bg-white overflow-hidden"
       style="aspect-ratio: 4 / 1; max-height: 300px"
     >
-      <h1
-        class="absolute inset-0 z-10 flex items-center justify-center px-4 text-center"
-      >
-        <span
-          class="bg-white/60 backdrop-blur-sm rounded-lg px-5 py-3 sm:px-8 sm:py-5 text-base sm:text-2xl md:text-4xl font-bold text-gray-900"
-        >
-          Calculadora de mezclas volumétricas
-        </span>
+      <h1 class="absolute inset-0 z-10 flex items-center px-4">
+        <div class="w-full max-w-7xl mx-auto">
+          <span
+            class="bg-white/60 backdrop-blur-sm rounded-lg px-5 py-3 sm:px-8 sm:py-5 text-base sm:text-2xl md:text-4xl font-bold text-gray-900"
+          >
+            Calculadora de mezclas volumétricas
+          </span>
+        </div>
       </h1>
     </div>
 
@@ -575,49 +575,54 @@
     </div>
 
     <section class="p-4 mt-4 border-t border-gray-200">
-      <h2 class="text-xl font-semibold mb-2">Sobre esta página</h2>
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-xl font-semibold mb-2">Sobre esta página</h2>
 
-      <div class="text-gray-700 max-w-3xl space-y-4">
-        <p>
-          Esta herramienta genera diagramas de mezclas —lineales, triaxiales y
-          biaxiales— para ayudarte a diseñar pruebas de esmaltes cerámicos
-          usando el método volumétrico. Empecé haciéndola para mis propios
-          experimentos y la comparto aquí por si a alguien más le resulta útil.
-        </p>
+        <div class="text-gray-700 max-w-[80ch] space-y-4">
+          <p>
+            Esta herramienta genera diagramas de mezclas —lineales, triaxiales y
+            biaxiales— para ayudarte a diseñar pruebas de esmaltes cerámicos
+            usando el método volumétrico. Empecé haciéndola para mis propios
+            experimentos y la comparto aquí por si a alguien más le resulta
+            útil.
+          </p>
 
-        <h3 class="text-lg font-semibold">¿Qué es el método volumétrico?</h3>
-        <p>
-          Es una técnica de experimentación con esmaltes que permite generar
-          decenas de combinaciones intermedias entre dos, tres o cuatro esmaltes
-          de partida sin tener que pesar cada una por separado. En lugar de usar
-          una balanza en cada punto de la mezcla, se miden volúmenes en
-          mililitros, generalmente usando una jeringa o similar.
-        </p>
+          <h3 class="text-lg font-semibold">¿Qué es el método volumétrico?</h3>
+          <p>
+            Es una técnica de experimentación con esmaltes que permite generar
+            decenas de combinaciones intermedias entre dos, tres o cuatro
+            esmaltes de partida sin tener que pesar cada una por separado. En
+            lugar de usar una balanza en cada punto de la mezcla, se miden
+            volúmenes en mililitros, generalmente usando una jeringa o similar.
+          </p>
 
-        <h3 class="text-lg font-semibold">El principio en el que se basa</h3>
-        <p>
-          Cada esmalte de esquina se prepara con un peso seco de materiales
-          exactamente igual y se completa con agua hasta alcanzar el mismo
-          volumen final. Al fijar de antemano estos dos valores, todos los
-          esmaltes de esquina quedan con la misma concentración de sólidos por
-          mililitro, aunque sus composiciones sean completamente distintas. Esto
-          significa que un mililitro de cualquier esquina aporta siempre la
-          misma cantidad de gramos secos. Como consecuencia, medir volúmenes en
-          los puntos intermedios equivale, de forma exacta, a mezclar los
-          esmaltes en esas mismas proporciones de peso.
-        </p>
+          <h3 class="text-lg font-semibold">El principio en el que se basa</h3>
+          <p>
+            Cada esmalte de esquina se prepara con un peso seco de materiales
+            exactamente igual y se completa con agua hasta alcanzar el mismo
+            volumen final. Al fijar de antemano estos dos valores, todos los
+            esmaltes de esquina quedan con la misma concentración de sólidos por
+            mililitro, aunque sus composiciones sean completamente distintas.
+            Esto significa que un mililitro de cualquier esquina aporta siempre
+            la misma cantidad de gramos secos. Como consecuencia, medir
+            volúmenes en los puntos intermedios equivale, de forma exacta, a
+            mezclar los esmaltes en esas mismas proporciones de peso.
+          </p>
 
-        <h3 class="text-lg font-semibold">Cómo usarla</h3>
-        <p>
-          Calcular a mano el volumen (ml) para cada punto de una mezcla
-          intermedia y apuntarlo en un papel es tedioso. Con esta herramienta,
-          tú defines el tipo de mezcla, qué tamaño de muestra quieres preparar,
-          cuántos puntos intermedios deseas generar y ella te calcula
-          automáticamente cuántos mililitros de cada esmalte de esquina
-          necesitas añadir en cada punto. Si además introduces las recetas de
-          los esmaltes de las esquinas en el apartado de Recetas, la herramienta
-          te generará también todas las recetas para cada punto intermedio.
-        </p>
+          <h3 class="text-lg font-semibold">Cómo usarla</h3>
+          <p>
+            Calcular a mano el volumen (ml) para cada punto de una mezcla
+            intermedia y apuntarlo en un papel es tedioso. Con esta herramienta,
+            tú defines el tipo de mezcla, qué tamaño de muestra quieres
+            preparar, cuántos puntos intermedios deseas generar y ella te
+            calcula automáticamente cuántos mililitros de cada esmalte de
+            esquina necesitas añadir en cada punto. Si además introduces las
+            recetas de los esmaltes de las esquinas en el apartado de Recetas,
+            la herramienta te generará también todas las recetas para cada punto
+            intermedio. Puedes descargar los diagramas en formato PNG y las
+            recetas en formato CSV para imprimirlas o guardarlas.
+          </p>
+        </div>
       </div>
     </section>
 

@@ -2,9 +2,10 @@
 // https://mimina.goatcounter.com/
 
 // TODO
-// - Que el contenido de la página que no sea la parte centra, esté en un container con un ancho máximo, centrado y con padding lateral, para que no se estire demasiado en pantallas anchas.
+// - Que el contenido de la página que no sea la parte central donde están los diagramas y las recetas, esté en un container con un ancho máximo y centrado, para que no se estire demasiado en pantallas anchas.
 // - Que se pueda descargar tanto el diagrama como las recetas en un formato que luego se pueda cargar de nuevo (por ejemplo, un JSON con los datos de la mezcla y las recetas, o un CSV con las recetas).
 // - Versión en inglés de la página, con un selector de idioma en la parte superior.
+// - Banner, la proporción de los espirógrafos no se mantiene al cambiar el tamaño de la ventana, hacer que se mantenga la proporción.
 
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos
