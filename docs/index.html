@@ -5,6 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de mezclas volumétricas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+      }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1/lib/p5.min.js"></script>
     <script
@@ -23,7 +34,7 @@
       <h1 class="absolute inset-0 z-10 flex items-center px-4">
         <div class="w-full max-w-7xl mx-auto">
           <span
-            class="bg-white/60 backdrop-blur-sm rounded-lg px-5 py-3 sm:px-8 sm:py-5 text-base sm:text-2xl md:text-4xl font-bold text-gray-900"
+            class="bg-white/20 backdrop-blur-sm rounded-lg px-5 py-3 sm:px-8 sm:py-5 text-base sm:text-2xl md:text-4xl font-bold text-gray-900"
           >
             Calculadora de mezclas volumétricas
           </span>
@@ -49,7 +60,7 @@
 
           <!-- Input field for test size -->
           <label for="size" class="block text-md font-medium mt-4"
-            >Tamaño de la muestra en ml:</label
+            >Tamaño de la muestra (ml):</label
           >
           <input
             id="size"
@@ -574,11 +585,13 @@
       </div>
     </div>
 
-    <section class="p-4 mt-4 border-t border-gray-200">
+    <section
+      class="mt-4 pt-10 pb-20 px-4 bg-linear-to-br from-[#1a2b4c] to-[#0e5c56]"
+    >
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-xl font-semibold mb-2">Sobre esta página</h2>
+        <h2 class="text-3xl font-bold mb-6 text-white">Sobre esta página</h2>
 
-        <div class="text-gray-700 max-w-[80ch] space-y-4">
+        <div class="text-[#d9edf0] max-w-[80ch] space-y-4">
           <p>
             Esta herramienta genera diagramas de mezclas —lineales, triaxiales y
             biaxiales— para ayudarte a diseñar pruebas de esmaltes cerámicos
@@ -587,7 +600,11 @@
             útil.
           </p>
 
-          <h3 class="text-lg font-semibold">¿Qué es el método volumétrico?</h3>
+          <h3
+            class="text-sm font-semibold uppercase tracking-wider text-[#8fe9db]"
+          >
+            ¿Qué es el método volumétrico?
+          </h3>
           <p>
             Es una técnica de experimentación con esmaltes que permite generar
             decenas de combinaciones intermedias entre dos, tres o cuatro
@@ -596,7 +613,11 @@
             volúmenes en mililitros, generalmente usando una jeringa o similar.
           </p>
 
-          <h3 class="text-lg font-semibold">El principio en el que se basa</h3>
+          <h3
+            class="text-sm font-semibold uppercase tracking-wider text-[#8fe9db]"
+          >
+            El principio en el que se basa
+          </h3>
           <p>
             Cada esmalte de esquina se prepara con un peso seco de materiales
             exactamente igual y se completa con agua hasta alcanzar el mismo
@@ -609,7 +630,11 @@
             mezclar los esmaltes en esas mismas proporciones de peso.
           </p>
 
-          <h3 class="text-lg font-semibold">Cómo usarla</h3>
+          <h3
+            class="text-sm font-semibold uppercase tracking-wider text-[#8fe9db]"
+          >
+            Cómo usarla
+          </h3>
           <p>
             Calcular a mano el volumen (ml) para cada punto de una mezcla
             intermedia y apuntarlo en un papel es tedioso. Con esta herramienta,
@@ -623,6 +648,31 @@
             recetas en formato CSV para imprimirlas o guardarlas.
           </p>
         </div>
+
+        <footer
+          class="mt-10 pt-6 border-t border-white/10 text-sm text-[#d9edf0] flex flex-col sm:flex-row sm:justify-between gap-2"
+        >
+          <div>
+            Hecho por Esperanza Moreno Cruz ·
+            <a
+              href="https://www.instagram.com/_mi_mi_na_/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline hover:text-white"
+              >Instagram</a
+            >
+          </div>
+          <div class="sm:text-right">
+            Licencia
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline hover:text-white"
+              >Creative Commons Attribution CC BY 4.0</a
+            >
+          </div>
+        </footer>
       </div>
     </section>
 
