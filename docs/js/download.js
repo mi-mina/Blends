@@ -8,7 +8,7 @@ import {
 const BLEND_TYPE_LABELS = {
   line: "lineal",
   triaxial: "triaxial",
-  biaxial: "tetraxial",
+  biaxial: "biaxial",
 };
 
 const RECIPE_LETTERS = { 1: "A", 2: "B", 3: "C", 4: "D" };
@@ -107,7 +107,7 @@ export function downloadRecipesAsCsv() {
     csv += csvRow([
       point.point,
       ...selectedMaterials.map(id =>
-        roundTo(getMaterialPercentageAtPoint(point.point, id))
+        roundTo(getMaterialPercentageAtPoint(point.point, id)),
       ),
     ]);
   });

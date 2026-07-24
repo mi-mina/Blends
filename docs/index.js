@@ -2,6 +2,9 @@
 // https://mimina.goatcounter.com/
 
 // TODO
+// - Que el contenido de la página que no sea la parte centra, esté en un container con un ancho máximo, centrado y con padding lateral, para que no se estire demasiado en pantallas anchas.
+// - Que se pueda descargar tanto el diagrama como las recetas en un formato que luego se pueda cargar de nuevo (por ejemplo, un JSON con los datos de la mezcla y las recetas, o un CSV con las recetas).
+// - Versión en inglés de la página, con un selector de idioma en la parte superior.
 
 // Improve:
 // - Calcular cuántos ml hacen falta de cada esmalte de los extremos
@@ -14,6 +17,9 @@
 // - Complementar el listado de materiales con https://ceramica.name/calculos/aformula
 // - Los anchos de las columnas de la tabla de recetas se reparten de forma desigual, hacer que se repartan de forma más uniforme
 // - No hacer que la tabla ocupe todo el ancho de la pantalla, sino solo el espacio necesario y pegada a la izquierda.
+// - Resaltar mejor el cuadro de las recetas
+// - Las recetas no se ven bien en pantallas pequeñas, hacer que se vea bien en móviles y tablets
+// - Añadir la suma de los porcentajes en cada receta, y que se pueda ver si es 100% o no
 
 // General:
 // - Cambiar la url para que blends se escriba con minúscula
@@ -180,7 +186,9 @@ function meetsRange(input, label) {
   const max = input.max === "" ? Infinity : Number(input.max);
 
   if (Number.isNaN(value) || value < min || value > max) {
-    const range = Number.isFinite(max) ? `entre ${min} y ${max}` : `al menos ${min}`;
+    const range = Number.isFinite(max)
+      ? `entre ${min} y ${max}`
+      : `al menos ${min}`;
     document.getElementById("graph").innerHTML =
       `<p class="p-4 text-gray-600">Introduce ${range} ${label} para dibujar el diagrama.</p>`;
     return false;

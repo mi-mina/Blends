@@ -44,7 +44,7 @@
           <select id="blendType" class="border border-gray-300 p-1 mt-1 w-full">
             <option value="line">Lineal</option>
             <option value="triaxial">Triaxial</option>
-            <option value="biaxial">Tetraxial</option>
+            <option value="biaxial">Biaxial</option>
           </select>
 
           <!-- Input field for test size -->
@@ -579,74 +579,45 @@
 
       <div class="text-gray-700 max-w-3xl space-y-4">
         <p>
-          Esta herramienta genera diagramas de mezclas —lineales, biaxiales y
-          triaxiales— para ayudarte a diseñar pruebas de esmaltes cerámicos
-          usando el método volumétrico. Introduce los esmaltes de tus
-          esquinas y la aplicación calcula automáticamente cuántos
-          mililitros de cada uno necesitas añadir en cada punto intermedio
-          de la mezcla.
+          Esta herramienta genera diagramas de mezclas —lineales, triaxiales y
+          biaxiales— para ayudarte a diseñar pruebas de esmaltes cerámicos
+          usando el método volumétrico. Empecé haciéndola para mis propios
+          experimentos y la comparto aquí por si a alguien más le resulta útil.
         </p>
 
-        <h3 class="text-lg font-semibold">
-          ¿Qué es el método volumétrico?
-        </h3>
+        <h3 class="text-lg font-semibold">¿Qué es el método volumétrico?</h3>
         <p>
-          Es una técnica de experimentación con esmaltes que permite
-          generar decenas de combinaciones intermedias entre dos, tres o
-          cuatro esmaltes de partida sin tener que pesar cada una por
-          separado. En lugar de usar una balanza en cada punto de la
-          mezcla, se miden volúmenes en mililitros, generalmente usando una
-          jeringa o similar.
+          Es una técnica de experimentación con esmaltes que permite generar
+          decenas de combinaciones intermedias entre dos, tres o cuatro esmaltes
+          de partida sin tener que pesar cada una por separado. En lugar de usar
+          una balanza en cada punto de la mezcla, se miden volúmenes en
+          mililitros, generalmente usando una jeringa o similar.
         </p>
 
         <h3 class="text-lg font-semibold">El principio en el que se basa</h3>
         <p>
           Cada esmalte de esquina se prepara con un peso seco de materiales
           exactamente igual y se completa con agua hasta alcanzar el mismo
-          volumen final. Al fijar de antemano estos dos valores, todas las
-          barbotinas de esquina quedan con la misma concentración de
-          sólidos por mililitro, aunque sus composiciones sean
-          completamente distintas. Esto significa que un mililitro de
-          cualquier esquina aporta siempre la misma cantidad de gramos
-          secos. Como consecuencia, medir volúmenes en los puntos
-          intermedios equivale, de forma exacta, a mezclar los esmaltes en
-          esas mismas proporciones de peso.
+          volumen final. Al fijar de antemano estos dos valores, todos los
+          esmaltes de esquina quedan con la misma concentración de sólidos por
+          mililitro, aunque sus composiciones sean completamente distintas. Esto
+          significa que un mililitro de cualquier esquina aporta siempre la
+          misma cantidad de gramos secos. Como consecuencia, medir volúmenes en
+          los puntos intermedios equivale, de forma exacta, a mezclar los
+          esmaltes en esas mismas proporciones de peso.
         </p>
 
-        <h3 class="text-lg font-semibold">
-          Cómo te ayuda esta aplicación
-        </h3>
+        <h3 class="text-lg font-semibold">Cómo usarla</h3>
         <p>
-          Preparar a mano los cálculos de volumen para cada punto de una
-          mezcla es tedioso y propenso a errores. Esta aplicación se
-          encarga de esa parte: tú defines el tipo de diagrama y el número
-          de puntos, y ella calcula exactamente cuántos mililitros de cada
-          esquina corresponden a cada punto intermedio.
+          Calcular a mano el volumen (ml) para cada punto de una mezcla
+          intermedia y apuntarlo en un papel es tedioso. Con esta herramienta,
+          tú defines el tipo de mezcla, qué tamaño de muestra quieres preparar,
+          cuántos puntos intermedios deseas generar y ella te calcula
+          automáticamente cuántos mililitros de cada esmalte de esquina
+          necesitas añadir en cada punto. Si además introduces las recetas de
+          los esmaltes de las esquinas en el apartado de Recetas, la herramienta
+          te generará también todas las recetas para cada punto intermedio.
         </p>
-
-        <h3 class="text-lg font-semibold">¿Para qué sirve?</h3>
-        <p>
-          El método volumétrico permite cubrir de forma sistemática y
-          rápida un espacio de composiciones amplio, algo que sería muy
-          lento de hacer pesando cada combinación individualmente. Es
-          especialmente útil para:
-        </p>
-        <ul class="list-disc pl-6 space-y-1">
-          <li>
-            Explorar y localizar zonas de interés visual o técnico (brillo,
-            mate, craquelado, color) entre distintos materiales o esmaltes
-            base.
-          </li>
-          <li>
-            Comparar el efecto de sustituir un material por otro, o variar
-            su proporción.
-          </li>
-          <li>
-            Generar rápidamente un mapa de referencia sobre el que decidir
-            hacia dónde afinar las propiedades de un esmalte como el
-            color, el brillo, etc.
-          </li>
-        </ul>
       </div>
     </section>
 
