@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora de mezclas volumétricas</title>
+    <title data-i18n="pageTitle">Calculadora de mezclas volumétricas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,9 +31,18 @@
       class="relative w-full bg-white overflow-hidden"
       style="aspect-ratio: 4 / 1; max-height: 300px"
     >
+      <div
+        id="lang-switch"
+        class="absolute top-3 right-3 z-20 flex overflow-hidden rounded-lg border border-white/40 bg-white/20 backdrop-blur-sm text-xs font-semibold"
+      >
+        <button type="button" data-lang="es" class="px-2 py-1">ES</button>
+        <button type="button" data-lang="en" class="px-2 py-1">EN</button>
+      </div>
+
       <h1 class="absolute inset-0 z-10 flex items-center px-4">
         <div class="w-full max-w-7xl mx-auto">
           <span
+            data-i18n="pageTitle"
             class="bg-white/20 backdrop-blur-sm rounded-lg px-5 py-3 sm:px-8 sm:py-5 text-base sm:text-2xl md:text-4xl font-bold text-gray-900"
           >
             Calculadora de mezclas volumétricas
@@ -50,22 +59,27 @@
         >
           <!-- Select field for options -->
           <label for="blendType" class="block text-md font-medium mt-4"
-            >Tipo de mezcla:</label
+            ><span data-i18n="blendTypeLabel">Tipo de mezcla:</span></label
           >
           <select id="blendType" class="border border-gray-300 p-1 mt-1 w-full">
-            <option value="line">Lineal</option>
-            <option value="triaxial">Triaxial</option>
-            <option value="biaxial">Biaxial</option>
+            <option value="line" data-i18n="optionLine">Lineal</option>
+            <option value="triaxial" data-i18n="optionTriaxial">
+              Triaxial
+            </option>
+            <option value="biaxial" data-i18n="optionBiaxial">Biaxial</option>
           </select>
 
           <!-- Input field for test size -->
           <label for="size" class="block text-md font-medium mt-4"
-            >Tamaño de la muestra (ml):</label
+            ><span data-i18n="sampleSizeLabel"
+              >Tamaño de la muestra (ml):</span
+            ></label
           >
           <input
             id="size"
             type="number"
             class="border border-gray-300 p-1 mt-1 w-full"
+            data-i18n-placeholder="numberPlaceholder"
             placeholder="Enter a number"
             value="20"
           />
@@ -73,12 +87,13 @@
           <div id="lineInputs">
             <!-- Input field for points -->
             <label for="linePoints" class="block text-md font-medium mt-4"
-              >Puntos:</label
+              ><span data-i18n="pointsLabel">Puntos:</span></label
             >
             <input
               id="linePoints"
               type="number"
               class="border border-gray-300 p-1 mt-1 w-full"
+              data-i18n-placeholder="numberPlaceholder"
               placeholder="Enter a number"
               value="11"
               min="2"
@@ -100,12 +115,13 @@
           <div id="triaxialInputs" class="hidden">
             <!-- Input field for points -->
             <label for="triaxialPoints" class="block text-md font-medium mt-4"
-              >Puntos:</label
+              ><span data-i18n="pointsLabel">Puntos:</span></label
             >
             <input
               id="triaxialPoints"
               type="number"
               class="border border-gray-300 p-1 mt-1 w-full"
+              data-i18n-placeholder="numberPlaceholder"
               placeholder="Enter a number"
               value="5"
               min="2"
@@ -116,12 +132,13 @@
           <div id="biaxialInputs" class="hidden">
             <!-- Input field for number of rows -->
             <label for="biaxialRows" class="block text-md font-medium mt-4"
-              >Filas:</label
+              ><span data-i18n="rowsLabel">Filas:</span></label
             >
             <input
               id="biaxialRows"
               type="number"
               class="border border-gray-300 p-1 mt-1 w-full"
+              data-i18n-placeholder="numberPlaceholder"
               placeholder="Enter a number"
               value="5"
               min="2"
@@ -130,12 +147,13 @@
 
             <!-- Input field for number of rows -->
             <label for="biaxialColumns" class="block text-md font-medium mt-4"
-              >Columnas:</label
+              ><span data-i18n="columnsLabel">Columnas:</span></label
             >
             <input
               id="biaxialColumns"
               type="number"
               class="border border-gray-300 p-1 mt-1 w-full"
+              data-i18n-placeholder="numberPlaceholder"
               placeholder="Enter a number"
               value="5"
               min="2"
@@ -147,6 +165,7 @@
           <button
             id="recalculateButton"
             class="bg-blue-500 text-white px-2 py-1 mt-4 w-full"
+            data-i18n="recalculateButton"
           >
             Recalcular
           </button>
@@ -159,12 +178,14 @@
             <button
               id="tab-graph"
               class="px-4 py-2 -mb-px border-b-2 border-blue-500 text-blue-600 font-semibold focus:outline-none"
+              data-i18n="tabDiagram"
             >
               Diagrama
             </button>
             <button
               id="tab-recipes"
               class="px-4 py-2 -mb-px border-b-2 border-transparent text-gray-600 hover:text-blue-600 font-semibold focus:outline-none"
+              data-i18n="tabRecipes"
             >
               Recetas
             </button>
@@ -187,7 +208,7 @@
                 <path d="M7 10l5 5 5-5" />
                 <path d="M4 19h16" />
               </svg>
-              <span>Descargar</span>
+              <span data-i18n="downloadButton">Descargar</span>
             </button>
           </div>
           <!-- Tab Contents -->
@@ -200,6 +221,7 @@
               <button
                 id="clear-recipes-button"
                 class="px-3 py-1.5 text-sm text-red-600 hover:text-red-800 hover:underline focus:outline-none"
+                data-i18n="clearRecipesButton"
               >
                 Borrar recetas
               </button>
@@ -210,16 +232,29 @@
                 id="recipe1"
                 class="bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Receta A</h3>
+                <h3
+                  class="text-lg font-semibold mb-2 text-center"
+                  data-i18n="recipeTitleA"
+                >
+                  Receta A
+                </h3>
 
                 <div class="flex items-center gap-x-4 py-2">
-                  <span class="flex-1 text-gray-700 font-semibold"
+                  <span
+                    class="flex-1 text-gray-700 font-semibold"
+                    data-i18n="recipeMaterial"
                     >Material</span
                   >
-                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                  <span
+                    class="w-1/6 text-gray-700 font-semibold text-center"
+                    data-i18n="recipePercent"
                     >%</span
                   >
-                  <span class="text-gray-700 font-semibold">Adit.</span>
+                  <span
+                    class="text-gray-700 font-semibold"
+                    data-i18n="recipeAdditive"
+                    >Adit.</span
+                  >
                 </div>
 
                 <div class="mb-2 flex items-center">
@@ -304,16 +339,29 @@
                 id="recipe2"
                 class="bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Receta B</h3>
+                <h3
+                  class="text-lg font-semibold mb-2 text-center"
+                  data-i18n="recipeTitleB"
+                >
+                  Receta B
+                </h3>
 
                 <div class="flex items-center gap-x-4 py-2">
-                  <span class="flex-1 text-gray-700 font-semibold"
+                  <span
+                    class="flex-1 text-gray-700 font-semibold"
+                    data-i18n="recipeMaterial"
                     >Material</span
                   >
-                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                  <span
+                    class="w-1/6 text-gray-700 font-semibold text-center"
+                    data-i18n="recipePercent"
                     >%</span
                   >
-                  <span class="text-gray-700 font-semibold">Adit.</span>
+                  <span
+                    class="text-gray-700 font-semibold"
+                    data-i18n="recipeAdditive"
+                    >Adit.</span
+                  >
                 </div>
 
                 <div class="mb-2 flex items-center">
@@ -397,16 +445,29 @@
                 id="recipe3"
                 class="hidden bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Receta C</h3>
+                <h3
+                  class="text-lg font-semibold mb-2 text-center"
+                  data-i18n="recipeTitleC"
+                >
+                  Receta C
+                </h3>
 
                 <div class="flex items-center gap-x-4 py-2">
-                  <span class="flex-1 text-gray-700 font-semibold"
+                  <span
+                    class="flex-1 text-gray-700 font-semibold"
+                    data-i18n="recipeMaterial"
                     >Material</span
                   >
-                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                  <span
+                    class="w-1/6 text-gray-700 font-semibold text-center"
+                    data-i18n="recipePercent"
                     >%</span
                   >
-                  <span class="text-gray-700 font-semibold">Adit.</span>
+                  <span
+                    class="text-gray-700 font-semibold"
+                    data-i18n="recipeAdditive"
+                    >Adit.</span
+                  >
                 </div>
 
                 <div class="mb-2 flex items-center">
@@ -490,16 +551,29 @@
                 id="recipe4"
                 class="hidden bg-white rounded shadow p-2 flex flex-col w-1/4"
               >
-                <h3 class="text-lg font-semibold mb-2 text-center">Receta D</h3>
+                <h3
+                  class="text-lg font-semibold mb-2 text-center"
+                  data-i18n="recipeTitleD"
+                >
+                  Receta D
+                </h3>
 
                 <div class="flex items-center gap-x-4 py-2">
-                  <span class="flex-1 text-gray-700 font-semibold"
+                  <span
+                    class="flex-1 text-gray-700 font-semibold"
+                    data-i18n="recipeMaterial"
                     >Material</span
                   >
-                  <span class="w-1/6 text-gray-700 font-semibold text-center"
+                  <span
+                    class="w-1/6 text-gray-700 font-semibold text-center"
+                    data-i18n="recipePercent"
                     >%</span
                   >
-                  <span class="text-gray-700 font-semibold">Adit.</span>
+                  <span
+                    class="text-gray-700 font-semibold"
+                    data-i18n="recipeAdditive"
+                    >Adit.</span
+                  >
                 </div>
 
                 <div class="mb-2 flex items-center">
@@ -589,10 +663,12 @@
       class="mt-4 pt-10 pb-20 px-4 bg-linear-to-br from-[#1a2b4c] to-[#0e5c56]"
     >
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-3xl font-bold mb-6 text-white">Sobre esta página</h2>
+        <h2 class="text-3xl font-bold mb-6 text-white" data-i18n="aboutTitle">
+          Sobre esta página
+        </h2>
 
         <div class="text-[#d9edf0] max-w-[80ch] space-y-4">
-          <p>
+          <p data-i18n="aboutIntro">
             Esta herramienta genera diagramas de mezclas —lineales, triaxiales y
             biaxiales— para ayudarte a diseñar pruebas de esmaltes cerámicos
             usando el método volumétrico. Empecé haciéndola para mis propios
@@ -602,10 +678,11 @@
 
           <h3
             class="text-sm font-semibold uppercase tracking-wider text-[#8fe9db]"
+            data-i18n="aboutVolumetricTitle"
           >
             ¿Qué es el método volumétrico?
           </h3>
-          <p>
+          <p data-i18n="aboutVolumetricBody">
             Es una técnica de experimentación con esmaltes que permite generar
             decenas de combinaciones intermedias entre dos, tres o cuatro
             esmaltes de partida sin tener que pesar cada una por separado. En
@@ -615,10 +692,11 @@
 
           <h3
             class="text-sm font-semibold uppercase tracking-wider text-[#8fe9db]"
+            data-i18n="aboutPrincipleTitle"
           >
             El principio en el que se basa
           </h3>
-          <p>
+          <p data-i18n="aboutPrincipleBody">
             Cada esmalte de esquina se prepara con un peso seco de materiales
             exactamente igual y se completa con agua hasta alcanzar el mismo
             volumen final. Al fijar de antemano estos dos valores, todos los
@@ -632,10 +710,11 @@
 
           <h3
             class="text-sm font-semibold uppercase tracking-wider text-[#8fe9db]"
+            data-i18n="aboutUsageTitle"
           >
             Cómo usarla
           </h3>
-          <p>
+          <p data-i18n="aboutUsageBody">
             Calcular a mano el volumen (ml) para cada punto de una mezcla
             intermedia y apuntarlo en un papel es tedioso. Con esta herramienta,
             tú defines el tipo de mezcla, qué tamaño de muestra quieres
@@ -653,7 +732,7 @@
           class="mt-10 pt-6 border-t border-white/10 text-sm text-[#d9edf0] flex flex-col sm:flex-row sm:justify-between gap-2"
         >
           <div>
-            Hecho por Esperanza Moreno Cruz ·
+            <span data-i18n="footerCredit">Hecho por Esperanza Moreno Cruz</span> ·
             <a
               href="https://www.instagram.com/_mi_mi_na_/"
               target="_blank"
@@ -663,7 +742,7 @@
             >
           </div>
           <div class="sm:text-right">
-            Licencia
+            <span data-i18n="footerLicenseLabel">Licencia</span>
             <a
               href="https://creativecommons.org/licenses/by/4.0/"
               target="_blank"

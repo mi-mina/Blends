@@ -1,5 +1,6 @@
 import { state } from "./state.js";
 import { roundTo } from "./utils.js";
+import { t, materialName } from "./i18n.js";
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions to draw blends ///////////////////////////////////////////////////
@@ -15,13 +16,17 @@ export function populateRecipeMaterialSelects() {
   // Get all selects for recipe materials
   const selects = document.querySelectorAll(".recipe-material-select");
   // Build options HTML
-  let options = '<option value="">Selecciona un material</option>';
+  let options = `<option value="">${t("selectMaterialOption")}</option>`;
   state.loadedMaterials.forEach(mat => {
-    options += `<option value="${mat.materialId}">${mat.materialName_es}</option>`;
+    options += `<option value="${mat.materialId}">${materialName(mat)}</option>`;
   });
-  // Set options for each select
+  // Set options for each select, preserving the current selection (this
+  // also runs after a language switch, when options are rebuilt with
+  // translated names but the underlying materialId shouldn't change)
   selects.forEach(select => {
+    const previousValue = select.value;
     select.innerHTML = options;
+    select.value = previousValue;
     // Set initial class based on value
     if (!select.value) {
       select.classList.add("text-gray-400");
@@ -224,7 +229,7 @@ export function renderRecipesTable() {
         ${selectedMaterials
           .map(
             mat =>
-              `<th class="border px-2 py-1">${state.materialsById[mat].materialName_es}</th>`
+              `<th class="border px-2 py-1">${materialName(state.materialsById[mat])}</th>`
           )
           .join("")}
       </tr>

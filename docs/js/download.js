@@ -4,11 +4,12 @@ import {
   getSelectedMaterials,
   getMaterialPercentageAtPoint,
 } from "./recipes.js";
+import { t, materialName } from "./i18n.js";
 
-const BLEND_TYPE_LABELS = {
-  line: "lineal",
-  triaxial: "triaxial",
-  biaxial: "biaxial",
+const BLEND_TYPE_KEYS = {
+  line: "blendTypeLine",
+  triaxial: "blendTypeTriaxial",
+  biaxial: "blendTypeBiaxial",
 };
 
 const RECIPE_LETTERS = { 1: "A", 2: "B", 3: "C", 4: "D" };
@@ -47,9 +48,10 @@ export function downloadDiagramAsPng() {
       const pointCount = state.blendData.length;
       const link = document.createElement("a");
       link.href = URL.createObjectURL(pngBlob);
-      link.download = `diagrama-${
-        BLEND_TYPE_LABELS[blendType] ?? blendType
-      }-${pointCount}puntos.png`;
+      const blendTypeLabel = BLEND_TYPE_KEYS[blendType]
+        ? t(BLEND_TYPE_KEYS[blendType])
+        : blendType;
+      link.download = `${t("filenameDiagram")}-${blendTypeLabel}-${pointCount}${t("filenamePoints")}.png`;
       link.click();
       URL.revokeObjectURL(link.href);
     }, "image/png");
@@ -83,25 +85,26 @@ export function downloadRecipesAsCsv() {
 
   let csv = "";
 
-  csv += csvRow(["Recetas base"]);
-  csv += csvRow(["Receta", "Material", "%"]);
+  csv += csvRow([t("csvBaseRecipes")]);
+  csv += csvRow([t("csvRecipe"), t("csvMaterial"), "%"]);
   Object.entries(state.recipes).forEach(([key, recipe]) => {
     recipe
       .filter(mat => mat.materialId)
       .forEach(mat => {
+        const material = state.materialsById[mat.materialId];
         csv += csvRow([
           RECIPE_LETTERS[key] ?? key,
-          mat.materialName,
+          material ? materialName(material) : mat.materialName,
           mat.percentage,
         ]);
       });
   });
 
   csv += csvRow([]);
-  csv += csvRow(["Tabla calculada"]);
+  csv += csvRow([t("csvCalculatedTable")]);
   csv += csvRow([
     "#",
-    ...selectedMaterials.map(id => state.materialsById[id].materialName_es),
+    ...selectedMaterials.map(id => materialName(state.materialsById[id])),
   ]);
   state.blendData.forEach(point => {
     csv += csvRow([
@@ -117,7 +120,10 @@ export function downloadRecipesAsCsv() {
   const blendType = document.getElementById("blendType").value;
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `recetas-${BLEND_TYPE_LABELS[blendType] ?? blendType}.csv`;
+  const blendTypeLabel = BLEND_TYPE_KEYS[blendType]
+    ? t(BLEND_TYPE_KEYS[blendType])
+    : blendType;
+  link.download = `${t("filenameRecipes")}-${blendTypeLabel}.csv`;
   link.click();
   URL.revokeObjectURL(link.href);
 }

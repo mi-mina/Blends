@@ -2,9 +2,7 @@
 // https://mimina.goatcounter.com/
 
 // TODO
-// - Que el contenido de la página que no sea la parte central donde están los diagramas y las recetas, esté en un container con un ancho máximo y centrado, para que no se estire demasiado en pantallas anchas.
 // - Que se pueda descargar tanto el diagrama como las recetas en un formato que luego se pueda cargar de nuevo (por ejemplo, un JSON con los datos de la mezcla y las recetas, o un CSV con las recetas).
-// - Versión en inglés de la página, con un selector de idioma en la parte superior.
 // - Banner, la proporción de los espirógrafos no se mantiene al cambiar el tamaño de la ventana, hacer que se mantenga la proporción.
 
 // Improve:
@@ -48,6 +46,8 @@ import {
 } from "./js/recipes.js";
 import { updateBlendInputs, updateRecipeCards, showTab } from "./js/ui.js";
 import { downloadDiagramAsPng, downloadRecipesAsCsv } from "./js/download.js";
+import { applyStaticTranslations, getLang, setLang, t } from "./js/i18n.js";
+import { resortMaterials } from "./js/materials.js";
 
 loadMaterials()
   .then(() => {
@@ -58,6 +58,9 @@ loadMaterials()
   });
 
 function init() {
+  applyStaticTranslations();
+  initLangSwitch();
+
   // Force "line" blend type to be selected on page load
   document.getElementById("blendType").value = "line";
   document.getElementById("blendType").dispatchEvent(new Event("change"));
@@ -99,9 +102,7 @@ function init() {
   document
     .getElementById("clear-recipes-button")
     .addEventListener("click", () => {
-      if (
-        confirm("¿Borrar todas las recetas? Esta acción no se puede deshacer.")
-      ) {
+      if (confirm(t("confirmClearRecipes"))) {
         clearAllRecipes();
       }
     });
@@ -112,7 +113,7 @@ function init() {
 
     // Check if the value is an integer
     if (!Number.isInteger(Number(numberPoints)) && numberPoints !== "") {
-      alert("Please enter a valid integer for Points.");
+      alert(t("invalidPointsAlert"));
       event.target.value = ""; // Clear the input if invalid
     }
   });
@@ -148,17 +149,17 @@ function drawBlend() {
     : 0;
 
   if (blendType === "line") {
-    if (!meetsRange(linePointsInput, "puntos")) return;
+    if (!meetsRange(linePointsInput, "labelPoints")) return;
     state.blendData = getLinearData(linePointsInput.value, increment, testSize);
     drawLinearBlend(state.blendData);
   } else if (blendType === "triaxial") {
-    if (!meetsRange(triaxialPointsInput, "puntos")) return;
+    if (!meetsRange(triaxialPointsInput, "labelPoints")) return;
     state.blendData = getTriaxialData(triaxialPointsInput.value, testSize);
     drawTriaxialBlend(state.blendData);
   } else if (blendType === "biaxial") {
     if (
-      !meetsRange(biaxialRowsInput, "filas") ||
-      !meetsRange(biaxialColumnsInput, "columnas")
+      !meetsRange(biaxialRowsInput, "labelRows") ||
+      !meetsRange(biaxialColumnsInput, "labelColumns")
     )
       return;
     state.blendData = getBiaxialData(
@@ -178,21 +179,55 @@ function drawBlend() {
  * (e.g. a division by zero producing NaN, or an unreasonably large
  * number of points freezing the page) reach the draw functions.
  * @param {HTMLInputElement} input
- * @param {string} label - Plural noun used in the warning message.
+ * @param {string} labelKey - i18n key for the plural noun used in the warning message.
  * @returns {boolean}
  */
-function meetsRange(input, label) {
+function meetsRange(input, labelKey) {
   const value = Number(input.value);
   const min = Number(input.min);
   const max = input.max === "" ? Infinity : Number(input.max);
 
   if (Number.isNaN(value) || value < min || value > max) {
     const range = Number.isFinite(max)
-      ? `entre ${min} y ${max}`
-      : `al menos ${min}`;
+      ? t("rangeExact", { min, max })
+      : t("rangeMin", { min });
     document.getElementById("graph").innerHTML =
-      `<p class="p-4 text-gray-600">Introduce ${range} ${label} para dibujar el diagrama.</p>`;
+      `<p class="p-4 text-gray-600">${t("meetsRangeError", { range, label: t(labelKey) })}</p>`;
     return false;
   }
   return true;
+}
+
+/**
+ * Wires the ES/EN buttons in the banner: highlights the active language
+ * and, on click, persists the choice and re-renders every translated
+ * piece of the page (static text, material selects/table, diagram).
+ */
+function initLangSwitch() {
+  const buttons = document.querySelectorAll("#lang-switch [data-lang]");
+
+  function updateActiveButton() {
+    const lang = getLang();
+    buttons.forEach(button => {
+      const active = button.dataset.lang === lang;
+      button.classList.toggle("bg-white/80", active);
+      button.classList.toggle("text-gray-900", active);
+      button.classList.toggle("text-gray-900/60", !active);
+    });
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      if (button.dataset.lang === getLang()) return;
+
+      setLang(button.dataset.lang);
+      applyStaticTranslations();
+      updateActiveButton();
+      resortMaterials();
+      populateRecipeMaterialSelects();
+      drawBlend();
+    });
+  });
+
+  updateActiveButton();
 }

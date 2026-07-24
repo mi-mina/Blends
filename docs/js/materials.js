@@ -1,4 +1,5 @@
 import { state } from "./state.js";
+import { getLang, materialName } from "./i18n.js";
 
 /**
  * Loads materials.json and populates the shared state with the loaded
@@ -11,9 +12,20 @@ export function loadMaterials() {
   });
 }
 
+/**
+ * Re-sorts and re-indexes the already-loaded materials for the active
+ * language. Call this after a language switch, before repopulating any
+ * material selects.
+ */
+export function resortMaterials() {
+  state.loadedMaterials = sortMaterialsByName(state.loadedMaterials);
+  state.materialsById = getMaterialsById(state.loadedMaterials);
+}
+
 function sortMaterialsByName(materials) {
+  const lang = getLang();
   return [...materials].sort((a, b) =>
-    a.materialName_es.localeCompare(b.materialName_es, "es")
+    materialName(a).localeCompare(materialName(b), lang)
   );
 }
 
